@@ -197,6 +197,26 @@
       min-height: 44px;
     }
 
+    /* กล่อง Preview รูปภาพที่เพิ่มขึ้น */
+    .preview-container {
+      margin-top: 12px;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      background: #f8f9fa;
+      border: 1px dashed #ced4da;
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .preview-image {
+      max-height: 220px;
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      object-fit: contain;
+    }
+
     .custom-scrollbar {
       max-height: 220px; overflow-y: auto; padding: 16px; background: #f8f9fa; border: 1px solid var(--border-color);
       border-radius: 12px; font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;
@@ -205,6 +225,7 @@
     .current-img-link a { color: var(--primary-green); font-weight: 600; text-decoration: none;}
     .powered-by { text-align: center; margin-top: 40px; font-size: 0.8rem; color: #adb5bd; }
 
+    /* SweetAlert2 */
     div:where(.swal2-container) { font-family: 'Kanit', sans-serif !important; }
     div:where(.swal2-popup) { border-radius: 20px !important; padding: 24px 16px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.15) !important; border: 1px solid #eaedf0 !important; }
     div:where(.swal2-title) { font-size: 1.4rem !important; font-weight: 600 !important; color: #1a1a1a !important; padding-top: 10px !important; }
@@ -408,7 +429,6 @@
                   <div class="mb-4 mt-5">
                     <label class="form-label fw-bold" data-text-key="labelVacCert">หลักฐานการฉีดวัคซีน *</label>
                     
-                    <!-- Hidden inputs (เข้าถึงผ่านฟังก์ชัน triggerFileInput) -->
                     <input type="file" accept="image/*" class="hidden-file-input" id="petVacCert_gallery" onchange="handleFileSelect('petVacCert', this)">
                     <input type="file" accept="image/*" capture="environment" class="hidden-file-input" id="petVacCert_camera" onchange="handleFileSelect('petVacCert', this)">
                     
@@ -426,6 +446,11 @@
                       <button type="button" id="btnRemoveVac" class="btn-close btn-sm" style="display:none;" onclick="removeSelectedFile('petVacCert')"></button>
                     </div>
 
+                    <!-- กล่อง Preview รูปภาพวัคซีน -->
+                    <div id="previewBoxVacCert" class="preview-container fade-in" style="display: none;">
+                      <img id="previewImgVacCert" class="preview-image" src="" alt="ตัวอย่างหลักฐานการฉีดวัคซีน">
+                    </div>
+
                     <div id="currentVacLink" class="mt-2" style="display:none;">
                       <span class="current-img-link">✅ <a href="#" target="_blank" id="linkVacHref" data-text-key="viewCurrentPic">ดูรูปปัจจุบัน</a> <span class="text-muted" data-text-key="uploadToChange">(อัปโหลดใหม่เพื่อเปลี่ยน)</span></span>
                     </div>
@@ -435,7 +460,6 @@
                   <div class="mb-4">
                     <label class="form-label fw-bold" data-text-key="labelPetPhoto">ภาพถ่ายสัตว์เลี้ยง *</label>
                     
-                    <!-- Hidden inputs (เข้าถึงผ่านฟังก์ชัน triggerFileInput) -->
                     <input type="file" accept="image/*" class="hidden-file-input" id="petPhoto_gallery" onchange="handleFileSelect('petPhoto', this)">
                     <input type="file" accept="image/*" capture="environment" class="hidden-file-input" id="petPhoto_camera" onchange="handleFileSelect('petPhoto', this)">
                     
@@ -451,6 +475,11 @@
                     <div id="boxPetPhoto" class="file-chosen-box">
                       <span id="filenamePetPhoto" class="text-muted small" data-text-key="fileNotChosen">ยังไม่ได้เลือกไฟล์</span>
                       <button type="button" id="btnRemovePhoto" class="btn-close btn-sm" style="display:none;" onclick="removeSelectedFile('petPhoto')"></button>
+                    </div>
+
+                    <!-- กล่อง Preview รูปสัตว์เลี้ยง -->
+                    <div id="previewBoxPetPhoto" class="preview-container fade-in" style="display: none;">
+                      <img id="previewImgPetPhoto" class="preview-image" src="" alt="ตัวอย่างภาพสัตว์เลี้ยง">
                     </div>
 
                     <div id="currentPetLink" class="mt-2" style="display:none;">
@@ -735,7 +764,6 @@
       petPhoto: null
     };
 
-    // ฟังก์ชันสั่งคลิก input file ผ่าน JavaScript โดยตรง
     function triggerFileInput(inputId) {
       const input = document.getElementById(inputId);
       if (input) {
@@ -943,10 +971,13 @@
         Swal.fire({ icon: 'info', title: langMessages.swalRejectTitle, text: langMessages.swalRejectText, confirmButtonColor: '#1e8449' });
     }
 
+    // จัดการเลือกไฟล์ และแสดง Preview ภาพทันที
     function handleFileSelect(fieldId, inputElement) {
         const langMessages = MESSAGES[currentLang];
         const filenameSpan = document.getElementById(fieldId === 'petVacCert' ? 'filenameVacCert' : 'filenamePetPhoto');
         const removeBtn = document.getElementById(fieldId === 'petVacCert' ? 'btnRemoveVac' : 'btnRemovePhoto');
+        const previewBox = document.getElementById(fieldId === 'petVacCert' ? 'previewBoxVacCert' : 'previewBoxPetPhoto');
+        const previewImg = document.getElementById(fieldId === 'petVacCert' ? 'previewImgVacCert' : 'previewImgPetPhoto');
 
         if (inputElement.files && inputElement.files[0]) {
             const file = inputElement.files[0];
@@ -959,9 +990,18 @@
             filenameSpan.classList.remove('text-muted');
             filenameSpan.classList.add('text-success');
             removeBtn.style.display = 'inline-block';
+
+            // แสดง Preview รูปภาพ
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                previewBox.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
         }
     }
 
+    // ลบไฟล์ที่เลือกและซ่อน Preview
     function removeSelectedFile(fieldId) {
         const langMessages = MESSAGES[currentLang];
         selectedFiles[fieldId] = null;
@@ -973,11 +1013,16 @@
         
         const filenameSpan = document.getElementById(fieldId === 'petVacCert' ? 'filenameVacCert' : 'filenamePetPhoto');
         const removeBtn = document.getElementById(fieldId === 'petVacCert' ? 'btnRemoveVac' : 'btnRemovePhoto');
+        const previewBox = document.getElementById(fieldId === 'petVacCert' ? 'previewBoxVacCert' : 'previewBoxPetPhoto');
+        const previewImg = document.getElementById(fieldId === 'petVacCert' ? 'previewImgVacCert' : 'previewImgPetPhoto');
 
         filenameSpan.textContent = langMessages.fileNotChosen;
         filenameSpan.classList.add('text-muted');
         filenameSpan.classList.remove('text-success');
         removeBtn.style.display = 'none';
+
+        if (previewImg) previewImg.src = '';
+        if (previewBox) previewBox.style.display = 'none';
     }
 
     function resizeImageAndGetBase64(file, maxWidth) {

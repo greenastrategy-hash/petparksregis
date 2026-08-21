@@ -139,20 +139,7 @@
     .btn-check:checked + .modern-radio-btn { background-color: #eafaf1; border-color: var(--primary-green); color: var(--primary-green); box-shadow: 0 0 0 1px var(--primary-green); }
     .btn-check:checked + .modern-radio-btn .small-desc { color: var(--primary-green); }
 
-    /* File / Camera Component Styling */
-    .hidden-file-input {
-      position: absolute !important;
-      width: 1px !important;
-      height: 1px !important;
-      padding: 0 !important;
-      margin: -1px !important;
-      overflow: hidden !important;
-      clip: rect(0, 0, 0, 0) !important;
-      white-space: nowrap !important;
-      border: 0 !important;
-      opacity: 0 !important;
-    }
-
+    /* File / Camera Styling (รองรับทุกอุปกรณ์ 100%) */
     .file-action-buttons {
       display: flex;
       gap: 12px;
@@ -175,6 +162,9 @@
       transition: all 0.2s ease;
       font-size: 0.95rem;
       min-height: 48px;
+      user-select: none;
+      -webkit-user-select: none;
+      text-decoration: none;
     }
     .btn-file-choice:hover, .btn-file-choice:active {
       background-color: #eafaf1;
@@ -197,24 +187,24 @@
       min-height: 44px;
     }
 
-    /* กล่อง Preview รูปภาพที่เพิ่มขึ้น */
+    /* กล่องพรีวิวรูปภาพ */
     .preview-container {
-      margin-top: 12px;
-      position: relative;
-      display: inline-block;
+      margin-top: 10px;
       width: 100%;
       text-align: center;
-      background: #f8f9fa;
-      border: 1px dashed #ced4da;
+      background: #f8fbf9;
+      border: 1px solid #c3e6cb;
       border-radius: 12px;
       padding: 12px;
+      box-sizing: border-box;
     }
     .preview-image {
-      max-height: 220px;
+      max-height: 250px;
       max-width: 100%;
       border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
       object-fit: contain;
+      display: inline-block;
     }
 
     .custom-scrollbar {
@@ -429,16 +419,17 @@
                   <div class="mb-4 mt-5">
                     <label class="form-label fw-bold" data-text-key="labelVacCert">หลักฐานการฉีดวัคซีน *</label>
                     
-                    <input type="file" accept="image/*" class="hidden-file-input" id="petVacCert_gallery" onchange="handleFileSelect('petVacCert', this)">
-                    <input type="file" accept="image/*" capture="environment" class="hidden-file-input" id="petVacCert_camera" onchange="handleFileSelect('petVacCert', this)">
+                    <!-- Inputs แบบซ่อนสมบูรณ์และผูก Native ID ตรงกับ label -->
+                    <input type="file" accept="image/*" class="d-none" id="petVacCert_gallery" onchange="handleFileSelect('petVacCert', this)">
+                    <input type="file" accept="image/*" capture="environment" class="d-none" id="petVacCert_camera" onchange="handleFileSelect('petVacCert', this)">
                     
                     <div class="file-action-buttons">
-                      <button type="button" class="btn-file-choice" onclick="triggerFileInput('petVacCert_camera')">
+                      <label for="petVacCert_camera" class="btn-file-choice">
                         <span class="icon">📷</span> <span data-text-key="btnCamera">ถ่ายภาพ</span>
-                      </button>
-                      <button type="button" class="btn-file-choice" onclick="triggerFileInput('petVacCert_gallery')">
+                      </label>
+                      <label for="petVacCert_gallery" class="btn-file-choice">
                         <span class="icon">📁</span> <span data-text-key="btnGallery">เลือกรูปภาพ</span>
-                      </button>
+                      </label>
                     </div>
 
                     <div id="boxVacCert" class="file-chosen-box">
@@ -460,16 +451,16 @@
                   <div class="mb-4">
                     <label class="form-label fw-bold" data-text-key="labelPetPhoto">ภาพถ่ายสัตว์เลี้ยง *</label>
                     
-                    <input type="file" accept="image/*" class="hidden-file-input" id="petPhoto_gallery" onchange="handleFileSelect('petPhoto', this)">
-                    <input type="file" accept="image/*" capture="environment" class="hidden-file-input" id="petPhoto_camera" onchange="handleFileSelect('petPhoto', this)">
+                    <input type="file" accept="image/*" class="d-none" id="petPhoto_gallery" onchange="handleFileSelect('petPhoto', this)">
+                    <input type="file" accept="image/*" capture="environment" class="d-none" id="petPhoto_camera" onchange="handleFileSelect('petPhoto', this)">
                     
                     <div class="file-action-buttons">
-                      <button type="button" class="btn-file-choice" onclick="triggerFileInput('petPhoto_camera')">
+                      <label for="petPhoto_camera" class="btn-file-choice">
                         <span class="icon">📷</span> <span data-text-key="btnCamera">ถ่ายภาพ</span>
-                      </button>
-                      <button type="button" class="btn-file-choice" onclick="triggerFileInput('petPhoto_gallery')">
+                      </label>
+                      <label for="petPhoto_gallery" class="btn-file-choice">
                         <span class="icon">📁</span> <span data-text-key="btnGallery">เลือกรูปภาพ</span>
-                      </button>
+                      </label>
                     </div>
 
                     <div id="boxPetPhoto" class="file-chosen-box">
@@ -764,13 +755,6 @@
       petPhoto: null
     };
 
-    function triggerFileInput(inputId) {
-      const input = document.getElementById(inputId);
-      if (input) {
-        input.click();
-      }
-    }
-
     function switchLanguage() {
         currentLang = currentLang === 'th' ? 'en' : 'th';
         const switcher = document.getElementById('language-switcher');
@@ -971,7 +955,7 @@
         Swal.fire({ icon: 'info', title: langMessages.swalRejectTitle, text: langMessages.swalRejectText, confirmButtonColor: '#1e8449' });
     }
 
-    // จัดการเลือกไฟล์ และแสดง Preview ภาพทันที
+    // จัดการเลือกไฟล์ และแสดง Preview
     function handleFileSelect(fieldId, inputElement) {
         const langMessages = MESSAGES[currentLang];
         const filenameSpan = document.getElementById(fieldId === 'petVacCert' ? 'filenameVacCert' : 'filenamePetPhoto');
@@ -991,7 +975,7 @@
             filenameSpan.classList.add('text-success');
             removeBtn.style.display = 'inline-block';
 
-            // แสดง Preview รูปภาพ
+            // แสดง Preview ภาพตัวอย่าง
             const reader = new FileReader();
             reader.onload = function(e) {
                 previewImg.src = e.target.result;
@@ -1001,7 +985,7 @@
         }
     }
 
-    // ลบไฟล์ที่เลือกและซ่อน Preview
+    // ลบไฟล์ที่เลือกและล้าง Preview
     function removeSelectedFile(fieldId) {
         const langMessages = MESSAGES[currentLang];
         selectedFiles[fieldId] = null;

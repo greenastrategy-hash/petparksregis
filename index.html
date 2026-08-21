@@ -32,7 +32,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Animations */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
@@ -40,7 +39,6 @@
     .step-section { animation: fadeInUp 0.5s ease-out forwards; }
     .fade-in { animation: fadeInUp 0.4s ease-out forwards; }
 
-    /* Announcement */
     .announcement-container {
       background: #f8fbf9; 
       border-bottom: 1px solid #eef5f0;
@@ -85,7 +83,6 @@
       100% { transform: translate3d(-100%, 0, 0); }
     }
 
-    /* Form Layout */
     .form-container { max-width: 680px; margin: 0 auto; background: var(--card-bg); border: none; border-radius: 0; box-shadow: none; }
     .form-header-band { height: 8px; background: linear-gradient(90deg, #1e8449 0%, #2ecc71 100%); }
     header { padding: 2rem 2rem 1rem 2rem; position: relative; text-align: center; }
@@ -99,7 +96,6 @@
       border-radius: 20px; background-color: #f1f3f5; border: 1px solid #dee2e6; color: #495057; cursor: pointer; z-index: 10;
     }
 
-    /* Inputs */
     .modern-input {
       border-radius: 10px; border: 1px solid var(--border-color); padding: 12px 16px; font-size: 1rem;
       transition: all 0.3s; background-color: #fafbfc; min-height: 48px; width: 100%;
@@ -112,7 +108,6 @@
     }
     select.modern-input:disabled { background-color: #e9ecef; cursor: not-allowed; opacity: 0.8; }
 
-    /* Buttons */
     .btn-custom { border-radius: 10px; font-weight: 500; padding: 12px 24px; transition: all 0.3s; min-height: 48px; }
     .modern-submit-btn {
       border-radius: 12px; padding: 16px; font-size: 1.15rem; font-weight: 600; background: var(--primary-green);
@@ -131,7 +126,6 @@
     .section-card { background: #ffffff; border: 1px solid #eaedf0; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.02); }
     .pet-section-card { background-color: #f7fbf8; border: 1px solid #e1efe6; }
 
-    /* Radio Group */
     .modern-radio-group { display: flex; flex-wrap: nowrap; justify-content: space-between; }
     #petTypeContainer.modern-radio-group { flex-wrap: wrap; }
     
@@ -145,21 +139,36 @@
     .btn-check:checked + .modern-radio-btn { background-color: #eafaf1; border-color: var(--primary-green); color: var(--primary-green); box-shadow: 0 0 0 1px var(--primary-green); }
     .btn-check:checked + .modern-radio-btn .small-desc { color: var(--primary-green); }
 
-    /* File/Camera Action UI */
+    /* File / Camera Component Styling */
+    .hidden-file-input {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+      opacity: 0 !important;
+    }
+
     .file-action-buttons {
       display: flex;
-      gap: 10px;
+      gap: 12px;
+      margin-top: 8px;
     }
+    
     .btn-file-choice {
       flex: 1;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       padding: 12px 14px;
-      border: 1.5px dashed #1e8449;
+      border: 1.5px solid #1e8449;
       border-radius: 12px;
-      background-color: #f8fbf9;
+      background-color: #ffffff;
       color: #1e8449;
       font-weight: 500;
       cursor: pointer;
@@ -167,7 +176,7 @@
       font-size: 0.95rem;
       min-height: 48px;
     }
-    .btn-file-choice:hover {
+    .btn-file-choice:hover, .btn-file-choice:active {
       background-color: #eafaf1;
       border-color: #156535;
       color: #156535;
@@ -175,16 +184,17 @@
     .btn-file-choice .icon {
       font-size: 1.2rem;
     }
+    
     .file-chosen-box {
-      margin-top: 8px;
-      padding: 8px 12px;
-      background-color: #ffffff;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
+      margin-top: 10px;
+      padding: 10px 14px;
+      background-color: #fcfdfe;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      min-height: 40px;
+      min-height: 44px;
     }
 
     .custom-scrollbar {
@@ -195,7 +205,6 @@
     .current-img-link a { color: var(--primary-green); font-weight: 600; text-decoration: none;}
     .powered-by { text-align: center; margin-top: 40px; font-size: 0.8rem; color: #adb5bd; }
 
-    /* SweetAlert2 */
     div:where(.swal2-container) { font-family: 'Kanit', sans-serif !important; }
     div:where(.swal2-popup) { border-radius: 20px !important; padding: 24px 16px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.15) !important; border: 1px solid #eaedf0 !important; }
     div:where(.swal2-title) { font-size: 1.4rem !important; font-weight: 600 !important; color: #1a1a1a !important; padding-top: 10px !important; }
@@ -395,20 +404,21 @@
                     </div>
                   </div>
                   
-                  <!-- หลักฐานการฉีดวัคซีน -->
+                  <!-- 1. หลักฐานการฉีดวัคซีน -->
                   <div class="mb-4 mt-5">
                     <label class="form-label fw-bold" data-text-key="labelVacCert">หลักฐานการฉีดวัคซีน *</label>
                     
-                    <input type="file" accept="image/*" class="d-none" id="petVacCert_gallery" onchange="handleFileSelect('petVacCert', this)">
-                    <input type="file" accept="image/*" capture="environment" class="d-none" id="petVacCert_camera" onchange="handleFileSelect('petVacCert', this)">
+                    <!-- Hidden inputs (เข้าถึงผ่านฟังก์ชัน triggerFileInput) -->
+                    <input type="file" accept="image/*" class="hidden-file-input" id="petVacCert_gallery" onchange="handleFileSelect('petVacCert', this)">
+                    <input type="file" accept="image/*" capture="environment" class="hidden-file-input" id="petVacCert_camera" onchange="handleFileSelect('petVacCert', this)">
                     
                     <div class="file-action-buttons">
-                      <label for="petVacCert_camera" class="btn-file-choice">
+                      <button type="button" class="btn-file-choice" onclick="triggerFileInput('petVacCert_camera')">
                         <span class="icon">📷</span> <span data-text-key="btnCamera">ถ่ายภาพ</span>
-                      </label>
-                      <label for="petVacCert_gallery" class="btn-file-choice">
+                      </button>
+                      <button type="button" class="btn-file-choice" onclick="triggerFileInput('petVacCert_gallery')">
                         <span class="icon">📁</span> <span data-text-key="btnGallery">เลือกรูปภาพ</span>
-                      </label>
+                      </button>
                     </div>
 
                     <div id="boxVacCert" class="file-chosen-box">
@@ -421,20 +431,21 @@
                     </div>
                   </div>
 
-                  <!-- ภาพถ่ายสัตว์เลี้ยง -->
+                  <!-- 2. ภาพถ่ายสัตว์เลี้ยง -->
                   <div class="mb-4">
                     <label class="form-label fw-bold" data-text-key="labelPetPhoto">ภาพถ่ายสัตว์เลี้ยง *</label>
                     
-                    <input type="file" accept="image/*" class="d-none" id="petPhoto_gallery" onchange="handleFileSelect('petPhoto', this)">
-                    <input type="file" accept="image/*" capture="environment" class="d-none" id="petPhoto_camera" onchange="handleFileSelect('petPhoto', this)">
+                    <!-- Hidden inputs (เข้าถึงผ่านฟังก์ชัน triggerFileInput) -->
+                    <input type="file" accept="image/*" class="hidden-file-input" id="petPhoto_gallery" onchange="handleFileSelect('petPhoto', this)">
+                    <input type="file" accept="image/*" capture="environment" class="hidden-file-input" id="petPhoto_camera" onchange="handleFileSelect('petPhoto', this)">
                     
                     <div class="file-action-buttons">
-                      <label for="petPhoto_camera" class="btn-file-choice">
+                      <button type="button" class="btn-file-choice" onclick="triggerFileInput('petPhoto_camera')">
                         <span class="icon">📷</span> <span data-text-key="btnCamera">ถ่ายภาพ</span>
-                      </label>
-                      <label for="petPhoto_gallery" class="btn-file-choice">
+                      </button>
+                      <button type="button" class="btn-file-choice" onclick="triggerFileInput('petPhoto_gallery')">
                         <span class="icon">📁</span> <span data-text-key="btnGallery">เลือกรูปภาพ</span>
-                      </label>
+                      </button>
                     </div>
 
                     <div id="boxPetPhoto" class="file-chosen-box">
@@ -466,10 +477,8 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.all.min.js"></script>
   
   <script>
-    // URL Web App สำหรับรับ API จาก Google Apps Script
     const GAS_ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbxoGcrlYMEDK2V5qo5gpgPmrynwWYJDSBPf3UvOgAfxm7Djrvz1hFwMEBqULBLG9bAXRA/exec';
 
-    // ฟังก์ชันยิง HTTP POST ไปยัง Google Apps Script (ใช้ text/plain เพื่อข้าม CORS Preflight)
     async function callGasApi(action, payload = {}) {
       try {
         const response = await fetch(GAS_ENDPOINT_URL, {
@@ -721,11 +730,18 @@
         ]
     };
 
-    // State จัดเก็บไฟล์ที่เลือก
     const selectedFiles = {
       petVacCert: null,
       petPhoto: null
     };
+
+    // ฟังก์ชันสั่งคลิก input file ผ่าน JavaScript โดยตรง
+    function triggerFileInput(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.click();
+      }
+    }
 
     function switchLanguage() {
         currentLang = currentLang === 'th' ? 'en' : 'th';
@@ -927,7 +943,6 @@
         Swal.fire({ icon: 'info', title: langMessages.swalRejectTitle, text: langMessages.swalRejectText, confirmButtonColor: '#1e8449' });
     }
 
-    // จัดการเลือกไฟล์จากกล้อง หรือ แกลเลอรี
     function handleFileSelect(fieldId, inputElement) {
         const langMessages = MESSAGES[currentLang];
         const filenameSpan = document.getElementById(fieldId === 'petVacCert' ? 'filenameVacCert' : 'filenamePetPhoto');
@@ -947,13 +962,14 @@
         }
     }
 
-    // ลบไฟล์ที่เลือก
     function removeSelectedFile(fieldId) {
         const langMessages = MESSAGES[currentLang];
         selectedFiles[fieldId] = null;
         
-        document.getElementById(`${fieldId}_gallery`).value = '';
-        document.getElementById(`${fieldId}_camera`).value = '';
+        const galleryInput = document.getElementById(`${fieldId}_gallery`);
+        const cameraInput = document.getElementById(`${fieldId}_camera`);
+        if (galleryInput) galleryInput.value = '';
+        if (cameraInput) cameraInput.value = '';
         
         const filenameSpan = document.getElementById(fieldId === 'petVacCert' ? 'filenameVacCert' : 'filenamePetPhoto');
         const removeBtn = document.getElementById(fieldId === 'petVacCert' ? 'btnRemoveVac' : 'btnRemovePhoto');
@@ -1027,7 +1043,6 @@
           const isEditMode = formData['isEditMode'] === 'true';
 
           if (document.getElementById('pet-registration-fields').style.display !== 'none') {
-              // กรณีสมัครใหม่ ต้องแนบไฟล์ทั้งสองรูป
               if (!isEditMode) {
                   if (!selectedFiles.petVacCert) return reject(new Error("กรุณาแนบหลักฐานการฉีดวัคซีน"));
                   if (!selectedFiles.petPhoto) return reject(new Error("กรุณาแนบภาพถ่ายสัตว์เลี้ยง"));

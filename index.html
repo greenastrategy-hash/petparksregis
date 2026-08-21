@@ -139,7 +139,16 @@
     .btn-check:checked + .modern-radio-btn { background-color: #eafaf1; border-color: var(--primary-green); color: var(--primary-green); box-shadow: 0 0 0 1px var(--primary-green); }
     .btn-check:checked + .modern-radio-btn .small-desc { color: var(--primary-green); }
 
-    /* File / Camera Styling (รองรับทุกอุปกรณ์ 100%) */
+    /* CSS Input File ซ่อนแบบปลอดภัยสำหรับทุก Browser */
+    .real-file-input {
+      position: absolute;
+      left: -9999px;
+      top: -9999px;
+      opacity: 0;
+      width: 1px;
+      height: 1px;
+    }
+
     .file-action-buttons {
       display: flex;
       gap: 12px;
@@ -162,9 +171,6 @@
       transition: all 0.2s ease;
       font-size: 0.95rem;
       min-height: 48px;
-      user-select: none;
-      -webkit-user-select: none;
-      text-decoration: none;
     }
     .btn-file-choice:hover, .btn-file-choice:active {
       background-color: #eafaf1;
@@ -419,17 +425,17 @@
                   <div class="mb-4 mt-5">
                     <label class="form-label fw-bold" data-text-key="labelVacCert">หลักฐานการฉีดวัคซีน *</label>
                     
-                    <!-- Inputs แบบซ่อนสมบูรณ์และผูก Native ID ตรงกับ label -->
-                    <input type="file" accept="image/*" class="d-none" id="petVacCert_gallery" onchange="handleFileSelect('petVacCert', this)">
-                    <input type="file" accept="image/*" capture="environment" class="d-none" id="petVacCert_camera" onchange="handleFileSelect('petVacCert', this)">
+                    <!-- Input Files -->
+                    <input type="file" accept="image/*" class="real-file-input" id="petVacCert_gallery" onchange="handleFileSelect('petVacCert', this)">
+                    <input type="file" accept="image/*" capture="environment" class="real-file-input" id="petVacCert_camera" onchange="handleFileSelect('petVacCert', this)">
                     
                     <div class="file-action-buttons">
-                      <label for="petVacCert_camera" class="btn-file-choice">
+                      <button type="button" class="btn-file-choice" onclick="openFilePicker('petVacCert', true)">
                         <span class="icon">📷</span> <span data-text-key="btnCamera">ถ่ายภาพ</span>
-                      </label>
-                      <label for="petVacCert_gallery" class="btn-file-choice">
+                      </button>
+                      <button type="button" class="btn-file-choice" onclick="openFilePicker('petVacCert', false)">
                         <span class="icon">📁</span> <span data-text-key="btnGallery">เลือกรูปภาพ</span>
-                      </label>
+                      </button>
                     </div>
 
                     <div id="boxVacCert" class="file-chosen-box">
@@ -451,16 +457,17 @@
                   <div class="mb-4">
                     <label class="form-label fw-bold" data-text-key="labelPetPhoto">ภาพถ่ายสัตว์เลี้ยง *</label>
                     
-                    <input type="file" accept="image/*" class="d-none" id="petPhoto_gallery" onchange="handleFileSelect('petPhoto', this)">
-                    <input type="file" accept="image/*" capture="environment" class="d-none" id="petPhoto_camera" onchange="handleFileSelect('petPhoto', this)">
+                    <!-- Input Files -->
+                    <input type="file" accept="image/*" class="real-file-input" id="petPhoto_gallery" onchange="handleFileSelect('petPhoto', this)">
+                    <input type="file" accept="image/*" capture="environment" class="real-file-input" id="petPhoto_camera" onchange="handleFileSelect('petPhoto', this)">
                     
                     <div class="file-action-buttons">
-                      <label for="petPhoto_camera" class="btn-file-choice">
+                      <button type="button" class="btn-file-choice" onclick="openFilePicker('petPhoto', true)">
                         <span class="icon">📷</span> <span data-text-key="btnCamera">ถ่ายภาพ</span>
-                      </label>
-                      <label for="petPhoto_gallery" class="btn-file-choice">
+                      </button>
+                      <button type="button" class="btn-file-choice" onclick="openFilePicker('petPhoto', false)">
                         <span class="icon">📁</span> <span data-text-key="btnGallery">เลือกรูปภาพ</span>
-                      </label>
+                      </button>
                     </div>
 
                     <div id="boxPetPhoto" class="file-chosen-box">
@@ -755,6 +762,23 @@
       petPhoto: null
     };
 
+    // ฟังก์ชันเปิดตัวเลือกไฟล์ที่เข้ากันได้กับทุกอุปกรณ์
+    function openFilePicker(fieldId, isCamera) {
+      const isMobile = /Android|iPhone|iPad|iPod|webOS/i.test(navigator.userAgent);
+      let targetInputId = `${fieldId}_gallery`;
+      
+      // บนมือถือ ถ้ากดถ่ายภาพให้ใช้ input camera ถ้าบน PC ให้เปิด file picker ปกติ
+      if (isCamera && isMobile) {
+        targetInputId = `${fieldId}_camera`;
+      }
+      
+      const input = document.getElementById(targetInputId);
+      if (input) {
+        input.value = ''; // เคลียร์ค่าเดิมเพื่อให้เลือกไฟล์เดิมซ้ำได้
+        input.click();
+      }
+    }
+
     function switchLanguage() {
         currentLang = currentLang === 'th' ? 'en' : 'th';
         const switcher = document.getElementById('language-switcher');
@@ -975,7 +999,7 @@
             filenameSpan.classList.add('text-success');
             removeBtn.style.display = 'inline-block';
 
-            // แสดง Preview ภาพตัวอย่าง
+            // แสดง Preview ภาพ
             const reader = new FileReader();
             reader.onload = function(e) {
                 previewImg.src = e.target.result;

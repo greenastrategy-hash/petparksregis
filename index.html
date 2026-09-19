@@ -3,300 +3,478 @@
 <head>
   <meta charset="UTF-8">
   <base target="_top">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
+  <!-- CSS Frameworks & Fonts -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <title data-text-key="pageTitle">แบบฟอร์มลงทะเบียนสมัครสมาชิกเข้าใช้บริการสวนสำหรับสัตว์เลี้ยง</title>
+  <title data-text-key="pageTitle">แบบฟอร์มลงทะเบียนสมาชิกสวนสำหรับสัตว์เลี้ยง</title>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap');
-
     :root {
-      --primary-green: #1e8449;
-      --primary-hover: #156535;
-      --bg-color: #f4f7f6;
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --primary-subtle: #ecfdf5;
+      --accent: #f59e0b;
+      --bg-surface: #f8fafc;
       --card-bg: #ffffff;
-      --border-color: #e0e0e0;
-      --text-main: #333333;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --shadow-soft: 0 10px 25px -5px rgba(16, 185, 129, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+      --shadow-card: 0 15px 35px -5px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.02);
     }
 
+    * { box-sizing: border-box; }
+
     body {
-      background-color: var(--bg-color); 
+      background: linear-gradient(180deg, #eefbf5 0%, var(--bg-surface) 300px);
       font-family: 'Kanit', sans-serif;
       color: var(--text-main);
-      padding: 0; 
       margin: 0;
+      padding: 0;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .step-section { animation: fadeInUp 0.5s ease-out forwards; }
-    .fade-in { animation: fadeInUp 0.4s ease-out forwards; }
-
-    .announcement-container {
-      background: #f8fbf9; 
-      border-bottom: 1px solid #eef5f0;
-      padding: 12px 16px;
+    /* Container Box */
+    .app-wrapper {
+      max-width: 680px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--card-bg);
       display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .announcement-badge {
-      background: linear-gradient(135deg, #1e8449 0%, #2ecc71 100%);
-      color: white;
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 20px;
-      white-space: nowrap;
-      box-shadow: 0 3px 8px rgba(30, 132, 73, 0.25);
-      z-index: 2;
-    }
-    .announcement-wrapper {
-      overflow: hidden;
-      white-space: nowrap;
-      flex-grow: 1;
-      position: relative;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-    }
-    .scrolling-text {
-      display: inline-block;
-      padding-left: 100%;
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: #2c3e50;
-      animation: marquee 25s linear infinite;
-      will-change: transform;
-      transform: translateZ(0); 
-    }
-    .announcement-wrapper:hover .scrolling-text,
-    .announcement-wrapper:active .scrolling-text { animation-play-state: paused; }
-    @keyframes marquee {
-      0% { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(-100%, 0, 0); }
-    }
-
-    .form-container { max-width: 680px; margin: 0 auto; background: var(--card-bg); border: none; border-radius: 0; box-shadow: none; }
-    .form-header-band { height: 8px; background: linear-gradient(90deg, #1e8449 0%, #2ecc71 100%); }
-    header { padding: 2rem 2rem 1rem 2rem; position: relative; text-align: center; }
-    h1 { font-size: 1.6rem; font-weight: 600; line-height: 1.4; color: #1a1a1a; margin-top: 20px;}
-    h3 { color: var(--primary-green); font-weight: 600; font-size: 1.3rem; margin-bottom: 15px;}
-    h4 { color: #4a4a4a; font-weight: 600; font-size: 1.15rem; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 20px;}
-    .content-wrapper { padding: 1.5rem 2rem 2.5rem 2rem; }
-
-    .btn-lang {
-      position: absolute; top: 15px; right: 15px; font-size: 0.85rem; font-weight: 500; padding: 6px 14px;
-      border-radius: 20px; background-color: #f1f3f5; border: 1px solid #dee2e6; color: #495057; cursor: pointer; z-index: 10;
-    }
-
-    .modern-input {
-      border-radius: 10px; border: 1px solid var(--border-color); padding: 12px 16px; font-size: 1rem;
-      transition: all 0.3s; background-color: #fafbfc; min-height: 48px; width: 100%;
-    }
-    .modern-input:focus { background-color: #fff; border-color: var(--primary-green); box-shadow: 0 0 0 4px rgba(30, 132, 73, 0.1); outline: none; z-index: 3;}
-    select.modern-input {
-      appearance: none; -webkit-appearance: none; -moz-appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e8449' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 16px center; background-size: 16px; padding-right: 45px; cursor: pointer; color: #495057;
-    }
-    select.modern-input:disabled { background-color: #e9ecef; cursor: not-allowed; opacity: 0.8; }
-
-    .btn-custom { border-radius: 10px; font-weight: 500; padding: 12px 24px; transition: all 0.3s; min-height: 48px; }
-    .modern-submit-btn {
-      border-radius: 12px; padding: 16px; font-size: 1.15rem; font-weight: 600; background: var(--primary-green);
-      border: none; box-shadow: 0 4px 12px rgba(30, 132, 73, 0.2); width: 100%; color: #fff;
-    }
-    .modern-submit-btn:hover:not(:disabled) { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(30, 132, 73, 0.3); color: #fff;}
-
-    .btn-fixed-width {
-      width: 95px !important;
-      text-align: center;
-      padding: 6px 0 !important;
-      font-weight: 500 !important;
-      border-radius: 6px !important;
-    }
-
-    .section-card { background: #ffffff; border: 1px solid #eaedf0; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.02); }
-    .pet-section-card { background-color: #f7fbf8; border: 1px solid #e1efe6; }
-
-    .modern-radio-group { display: flex; flex-wrap: nowrap; justify-content: space-between; }
-    #petTypeContainer.modern-radio-group { flex-wrap: wrap; }
-    
-    .modern-radio-btn {
-      border: 1px solid var(--border-color); border-radius: 12px; background-color: #ffffff; color: #495057;
-      font-weight: 500; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 10px 4px; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,0,0,0.02); cursor: pointer;
-    }
-    .modern-radio-btn .small-desc { font-size: 0.75rem; font-weight: 400; color: #6c757d; margin-top: 2px; }
-    
-    .btn-check:checked + .modern-radio-btn { background-color: #eafaf1; border-color: var(--primary-green); color: var(--primary-green); box-shadow: 0 0 0 1px var(--primary-green); }
-    .btn-check:checked + .modern-radio-btn .small-desc { color: var(--primary-green); }
-
-    /* CSS Input File ซ่อนแบบปลอดภัยสำหรับทุก Browser */
-    .real-file-input {
-      position: absolute;
-      left: -9999px;
-      top: -9999px;
-      opacity: 0;
-      width: 1px;
-      height: 1px;
-    }
-
-    .file-action-buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 8px;
-    }
-    
-    .btn-file-choice {
-      flex: 1;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 14px;
-      border: 1.5px solid #1e8449;
-      border-radius: 12px;
-      background-color: #ffffff;
-      color: #1e8449;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 0.95rem;
-      min-height: 48px;
-    }
-    .btn-file-choice:hover, .btn-file-choice:active {
-      background-color: #eafaf1;
-      border-color: #156535;
-      color: #156535;
-    }
-    .btn-file-choice .icon {
-      font-size: 1.2rem;
-    }
-    
-    .file-chosen-box {
-      margin-top: 10px;
-      padding: 10px 14px;
-      background-color: #fcfdfe;
-      border: 1px solid #dee2e6;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 44px;
-    }
-
-    /* กล่องพรีวิวรูปภาพ */
-    .preview-container {
-      margin-top: 10px;
-      width: 100%;
-      text-align: center;
-      background: #f8fbf9;
-      border: 1px solid #c3e6cb;
-      border-radius: 12px;
-      padding: 12px;
-      box-sizing: border-box;
-    }
-    .preview-image {
-      max-height: 250px;
-      max-width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-      object-fit: contain;
-      display: inline-block;
-    }
-
-    .custom-scrollbar {
-      max-height: 220px; overflow-y: auto; padding: 16px; background: #f8f9fa; border: 1px solid var(--border-color);
-      border-radius: 12px; font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;
-    }
-    .current-img-link { font-size: 0.9rem; background: #e8f5e9; padding: 8px 14px; border-radius: 8px; display: inline-block;}
-    .current-img-link a { color: var(--primary-green); font-weight: 600; text-decoration: none;}
-    .powered-by { text-align: center; margin-top: 40px; font-size: 0.8rem; color: #adb5bd; }
-
-    /* SweetAlert2 */
-    div:where(.swal2-container) { font-family: 'Kanit', sans-serif !important; }
-    div:where(.swal2-popup) { border-radius: 20px !important; padding: 24px 16px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.15) !important; border: 1px solid #eaedf0 !important; }
-    div:where(.swal2-title) { font-size: 1.4rem !important; font-weight: 600 !important; color: #1a1a1a !important; padding-top: 10px !important; }
-    div:where(.swal2-html-container) { font-size: 1.05rem !important; line-height: 1.6 !important; color: #4a4a4a !important; word-wrap: break-word !important; }
-    button:where(.swal2-styled) { border-radius: 12px !important; font-weight: 500 !important; padding: 12px 28px !important; font-size: 1.05rem !important; transition: all 0.3s ease !important; }
-    button:where(.swal2-confirm) { background-color: var(--primary-green) !important; box-shadow: 0 4px 12px rgba(30, 132, 73, 0.2) !important; }
-    button:where(.swal2-confirm):hover { background-color: var(--primary-hover) !important; transform: translateY(-2px); }
-    
-    .table-hover td, .table-hover th { vertical-align: middle; }
-    h1, h3, h4, p, label, .swal2-html-container { overflow-wrap: break-word; word-wrap: break-word; word-break: keep-all; line-height: 1.5; }
-
-    @media (max-width: 767px) {
-      body { background-color: var(--card-bg); }
-      header { padding: 1.5rem 1rem 0.5rem 1rem; }
-      h1 { font-size: 1.35rem; margin-top: 25px; padding: 0 10px;}
-      h3 { font-size: 1.15rem; }
-      .content-wrapper { padding: 1.2rem 1rem 2rem 1rem; }
-      .section-card { padding: 16px; border-radius: 12px; }
-      
-      .input-group.modern-input-group { flex-direction: column; display: flex; }
-      .input-group.modern-input-group > .form-control { width: 100% !important; min-width: 100%; border-radius: 10px !important; margin-bottom: 12px; }
-      .input-group.modern-input-group > .btn { width: 100% !important; border-radius: 10px !important; margin-left: 0 !important; min-height: 48px;}
-
-      #step-1 .d-flex { flex-direction: column-reverse; gap: 12px; }
-      #step-1 .btn { width: 100%; }
-
-      .modern-radio-btn { font-size: 0.95rem; padding: 10px 0; }
-      .modern-radio-btn .small-desc { font-size: 0.7rem; }
-      
-      .table-responsive { font-size: 0.85rem; border-radius: 8px; }
-      .table-responsive th, .table-responsive td { white-space: nowrap; padding: 10px; }
-      .mobile-no-break { display: none; }
-      .btn-lang { top: 10px; right: 10px; }
+      flex-direction: column;
     }
 
     @media (min-width: 768px) {
-      body { padding: 30px 20px; }
-      .form-container { border-radius: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08); border: 1px solid #eaedf0; }
-      .form-header-band { border-top-left-radius: 20px; border-top-right-radius: 20px; }
-      .mobile-no-break { display: inline; }
+      body { padding: 30px 15px; }
+      .app-wrapper {
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        border: 1px solid var(--border-color);
+        min-height: auto;
+        overflow: hidden;
+      }
+    }
+
+    /* Header & Marquee Announcement */
+    .announcement-bar {
+      background: #f0fdf4;
+      border-bottom: 1px solid #dcfce7;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+    }
+    .announcement-badge {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 50px;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+    }
+    .announcement-scroll {
+      overflow: hidden;
+      white-space: nowrap;
+      flex: 1;
+      mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    }
+    .announcement-scroll span {
+      display: inline-block;
+      padding-left: 100%;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #166534;
+      animation: marquee 26s linear infinite;
+    }
+    .announcement-scroll:hover span { animation-play-state: paused; }
+    @keyframes marquee { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-100%,0,0); } }
+
+    /* Header Section */
+    .brand-header {
+      padding: 24px 20px 16px 20px;
+      position: relative;
+      text-align: center;
+      background: radial-gradient(circle at 50% -20%, #d1fae5 0%, #ffffff 70%);
+    }
+    .btn-lang-toggle {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 50px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+    .btn-lang-toggle:hover {
+      background: var(--primary-subtle);
+      border-color: var(--primary);
+      color: var(--primary-dark);
+    }
+    .pet-logo-circle {
+      width: 58px;
+      height: 58px;
+      background: linear-gradient(135deg, var(--primary) 0%, #34d399 100%);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.75rem;
+      box-shadow: 0 8px 18px rgba(16, 185, 129, 0.25);
+      margin-bottom: 12px;
+    }
+    .brand-header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* Stepper Bar */
+    .stepper-nav {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      padding: 12px 20px 20px;
+    }
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      position: relative;
+    }
+    .step-indicator.active { color: var(--primary-dark); }
+    .step-indicator .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+    .step-indicator.active .step-num {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Content Area */
+    .page-content {
+      padding: 0 20px 30px;
+      flex: 1;
+    }
+
+    /* Section Cards */
+    .form-card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-soft);
+    }
+    .form-card.search-card {
+      background: #f8fafc;
+      border: 1.5px dashed #cbd5e1;
+    }
+    .form-card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .form-card-title i { color: var(--primary); }
+
+    /* Inputs */
+    .modern-input {
+      font-size: 1rem;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border-color);
+      padding: 12px 14px;
+      min-height: 48px;
+      background-color: #fafbfc;
+      transition: all 0.2s ease;
+      color: var(--text-main);
+    }
+    .modern-input:focus {
+      background-color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+      outline: none;
+    }
+    select.modern-input {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2310b981'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+      background-position: right 14px center;
+      background-repeat: no-repeat;
+      background-size: 18px;
+      appearance: none;
+      padding-right: 42px;
+    }
+
+    /* Buttons */
+    .btn-submit-action {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 14px 20px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+      width: 100%;
+      min-height: 52px;
+      transition: all 0.2s ease;
+    }
+    .btn-submit-action:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+      color: #fff;
+    }
+    .btn-submit-action:disabled {
+      background: #cbd5e1;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    /* Radio Tiles (Pet Types, Genders, Sizes) */
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .tile-grid-2 { grid-template-columns: repeat(2, 1fr); }
+    
+    .radio-tile-label {
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      padding: 12px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      min-height: 64px;
+      user-select: none;
+    }
+    .radio-tile-label:hover {
+      border-color: #a7f3d0;
+      background: #f0fdf4;
+    }
+    .radio-tile-label .tile-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .radio-tile-label .tile-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #334155;
+    }
+    .radio-tile-label .tile-subtitle {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .btn-check:checked + .radio-tile-label {
+      background-color: var(--primary-subtle);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    .btn-check:checked + .radio-tile-label .tile-title {
+      color: var(--primary-dark);
+    }
+
+    /* Custom File Picker Buttons */
+    .file-input-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .btn-file-touch {
+      border: 1.5px solid var(--primary);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--primary-dark);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-file-touch:hover, .btn-file-touch:active {
+      background: var(--primary-subtle);
+    }
+
+    /* File Status Box */
+    .file-chosen-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      margin-top: 8px;
+      font-size: 0.85rem;
+    }
+
+    /* Image Preview */
+    .preview-box {
+      margin-top: 10px;
+      background: #f8fafc;
+      border: 1px dashed var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      text-align: center;
+    }
+    .preview-img-render {
+      max-height: 220px;
+      max-width: 100%;
+      border-radius: 8px;
+      object-fit: contain;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    }
+
+    /* Terms Box */
+    .terms-box {
+      max-height: 240px;
+      overflow-y: auto;
+      padding: 16px;
+      background: #f8fafc;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    .terms-box::-webkit-scrollbar { width: 6px; }
+    .terms-box::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+    .real-file-input { display: none; }
+    
+    /* Footer */
+    footer.app-footer {
+      padding: 20px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid #f1f5f9;
+      background: #fafbfc;
+    }
+
+    /* Responsive adjustment */
+    @media (max-width: 480px) {
+      .tile-grid { gap: 6px; }
+      .radio-tile-label { padding: 10px 4px; }
+      .brand-header h1 { font-size: 1.2rem; }
     }
   </style>
 </head>
 
-<body class="p-0"> 
-  <div class="card form-container"> 
-    <div class="form-header-band"></div>
-
-    <div class="announcement-container">
-      <div class="announcement-badge" data-text-key="announcementBadge">📢 ประกาศ</div>
-      <div class="announcement-wrapper">
-        <div class="scrolling-text" data-text-key="announcementText">
+<body>
+  <div class="app-wrapper">
+    <!-- แถบประกาศ -->
+    <div class="announcement-bar">
+      <div class="announcement-badge" data-text-key="announcementBadge">
+        <i class="bi bi-megaphone-fill"></i> ประกาศ
+      </div>
+      <div class="announcement-scroll">
+        <span data-text-key="announcementText">
           หากไม่ได้รับอีเมลในการแจ้งรหัสสมาชิก สามารถนำเลขบัตรประชาชนหรือ Passport ID ระบุในช่องค้นหาเพื่อดูรหัสสมาชิกได้ ขออภัยในความไม่สะดวก 🐾
-        </div>
+        </span>
       </div>
     </div>
 
-    <header class="mb-2">
-      <button id="language-switcher" class="btn-lang" onclick="switchLanguage()">English</button> 
-      <h1 data-text-key="mainTitle">แบบฟอร์มลงทะเบียนสมัครสมาชิก<span class="mobile-no-break"><br></span>เข้าใช้บริการสวนสำหรับสัตว์เลี้ยง 🐾</h1>
-    </header>
+    <!-- ส่วนหัว Header & สลับภาษา -->
+    <div class="brand-header">
+      <button id="language-switcher" class="btn-lang-toggle" onclick="switchLanguage()">
+        <i class="bi bi-translate me-1"></i> English
+      </button>
+      <div class="pet-logo-circle">
+        <i class="bi bi-heart-pulse-fill"></i>
+      </div>
+      <h1 data-text-key="mainTitle">แบบฟอร์มลงทะเบียนสมาชิก<br>สวนสำหรับสัตว์เลี้ยง 🐾</h1>
+    </div>
 
-    <div class="content-wrapper"> 
-        <section id="search-section" class="mb-5 step-section">
-          <h3 data-text-key="searchHeader">🔍 ค้นหาข้อมูลสมาชิกเดิม</h3>
-          <div class="input-group modern-input-group mb-3">
-            <input type="text" class="form-control modern-input" id="search-id" data-placeholder-key="searchPlaceholder" placeholder="หมายเลขบัตรประชาชน หรือ Passport ID">
-            <button class="btn btn-primary" type="button" onclick="handleSearch()" data-text-key="searchButton">ค้นหา</button>
+    <!-- แถบระบุขั้นตอน (Step Tracker) -->
+    <div class="stepper-nav">
+      <div class="step-indicator active" id="badge-step-1">
+        <span class="step-num">1</span>
+        <span data-text-key="step1HeaderShort">ข้อตกลงและเงื่อนไข</span>
+      </div>
+      <i class="bi bi-chevron-right text-muted small align-self-center"></i>
+      <div class="step-indicator" id="badge-step-2">
+        <span class="step-num">2</span>
+        <span data-text-key="step2HeaderShort">ข้อมูลลงทะเบียน</span>
+      </div>
+    </div>
+
+    <!-- ส่วนเนื้อหาหลัก -->
+    <div class="page-content">
+
+      <!-- ส่วนค้นหาข้อมูลเดิม (Search Card) -->
+      <section id="search-section" class="form-card search-card">
+        <div class="form-card-title">
+          <i class="bi bi-search"></i>
+          <span data-text-key="searchHeader">ค้นหาข้อมูลสมาชิกเดิม</span>
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control modern-input" id="search-id" data-placeholder-key="searchPlaceholder" placeholder="หมายเลขบัตรประชาชน หรือ Passport ID">
+          <button class="btn btn-dark px-4 fw-semibold" type="button" onclick="handleSearch()" data-text-key="searchButton">
+            ค้นหา
+          </button>
+        </div>
+      </section>
+
+      <!-- STEP 1: กฎระเบียบและเงื่อนไข -->
+      <section id="step-1">
+        <div class="form-card">
+          <div class="form-card-title">
+            <i class="bi bi-shield-check"></i>
+            <span data-text-key="step1Header">เงื่อนไขการเข้าใช้บริการสวนสัตว์เลี้ยง</span>
           </div>
-        </section>
-
-        <section id="step-1" class="step-section">
-          <h3 data-text-key="step1Header">ขั้นตอนที่ 1: การยอมรับเงื่อนไข</h3>
-          <p class="text-muted small" data-text-key="step1Sub">*(ต้องเลื่อนอ่านจนสุดเพื่อยอมรับ)*</p>
-          <div id="terms-content" class="mb-4 custom-scrollbar" onscroll="checkScroll()">
+          <p class="text-danger small mb-2" data-text-key="step1Sub">
+            <i class="bi bi-arrow-down-circle me-1"></i>*(กรุณาเลื่อนอ่านกฎระเบียบจนสุดเพื่อเปิดใช้งานปุ่มยินยอม)*
+          </p>
+          <div id="terms-content" class="terms-box mb-3" onscroll="checkScroll()">
             <p data-text-key="term1">1. สัตว์เลี้ยงต้องได้รับการฉีดวัคซีนครบถ้วนตามกำหนด และต้องมีหลักฐานแสดง</p>
             <p data-text-key="term2">2. ผู้ลงทะเบียนจะต้องรับผิดชอบต่อสัตว์เลี้ยงของตนเองตลอดเวลาที่อยู่ในพื้นที่สวน</p>
             <p data-text-key="term3">3. ผู้ลงทะเบียนต้องรับผิดชอบต่อสัตว์เลี้ยงของตนเองและต้องมีสายจูง/ตะกร้อครอบปากในพื้นที่ที่กำหนด</p>
@@ -304,202 +482,243 @@
             <p data-text-key="term5">5. ต้องปฏิบัติตามเงื่อนไขของสวนสำหรับสัตว์เลี้ยงที่ท่านใช้บริการอย่างเคร่งครัด</p>
           </div>
 
-          <div class="d-flex justify-content-between mt-4">
-            <button class="btn btn-outline-danger btn-custom" type="button" onclick="rejectTerms()" data-text-key="rejectButton">ปฏิเสธ</button>
-            <button class="btn btn-primary btn-custom" id="accept-btn" type="button" disabled onclick="nextStep(2)" data-text-key="acceptButtonDisabled">ยอมรับและดำเนินการต่อ</button>
+          <div class="d-flex gap-2 mt-4">
+            <button class="btn btn-light border flex-fill py-3 fw-medium text-danger" type="button" onclick="rejectTerms()" data-text-key="rejectButton">
+              ปฏิเสธ
+            </button>
+            <button class="btn btn-submit-action flex-fill" id="accept-btn" type="button" disabled onclick="nextStep(2)" data-text-key="acceptButtonDisabled">
+              ยอมรับและดำเนินการต่อ
+            </button>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="step-2" class="step-section" style="display: none;">
-          <h3 data-text-key="step2Header">ขั้นตอนที่ 2: กรอกข้อมูลการลงทะเบียน</h3>
-          
-          <form id="registration-form">
-            <input type="hidden" id="isEditMode" name="isEditMode" value="false">
-            <input type="hidden" id="originalMemberID" name="originalMemberID" value="">
-            <input type="hidden" id="existingVacUrl" name="existingVacUrl" value="">
-            <input type="hidden" id="existingPetUrl" name="existingPetUrl" value="">
-            <input type="hidden" id="editPin" name="editPin" value="">
+      <!-- STEP 2: แบบฟอร์มกรอกข้อมูล -->
+      <section id="step-2" style="display: none;">
+        <form id="registration-form">
+          <input type="hidden" id="isEditMode" name="isEditMode" value="false">
+          <input type="hidden" id="originalMemberID" name="originalMemberID" value="">
+          <input type="hidden" id="existingVacUrl" name="existingVacUrl" value="">
+          <input type="hidden" id="existingPetUrl" name="existingPetUrl" value="">
+          <input type="hidden" id="editPin" name="editPin" value="">
 
-            <div id="registration-details"> 
-              <div class="section-card">
-                <h4 class="mb-3" data-text-key="regInfoTitle">ข้อมูลผู้ลงทะเบียน</h4>
-                <div class="mb-3">
-                  <label for="regName" class="form-label fw-bold" data-text-key="labelName">ชื่อ-นามสกุล ผู้ลงทะเบียน *</label>
-                  <input type="text" class="form-control modern-input" id="regName" name="regName" required>
+          <div id="registration-details">
+            <!-- 1. ข้อมูลเจ้าของ -->
+            <div class="form-card">
+              <div class="form-card-title">
+                <i class="bi bi-person-circle"></i>
+                <span data-text-key="regInfoTitle">ข้อมูลผู้ลงทะเบียน (เจ้าของ)</span>
+              </div>
+              <div class="mb-3">
+                <label for="regName" class="form-label fw-bold small text-secondary" data-text-key="labelName">ชื่อ-นามสกุล ผู้ลงทะเบียน *</label>
+                <input type="text" class="form-control modern-input" id="regName" name="regName" placeholder="เช่น นายใจดี รักสัตว์" required>
+              </div>
+              <div class="mb-3">
+                <label for="regID" class="form-label fw-bold small text-secondary" data-text-key="labelID">หมายเลขบัตรประชาชน หรือ Passport ID *</label>
+                <input type="text" class="form-control modern-input" id="regID" name="regID" placeholder="เลข 13 หลัก หรือ หมายเลขพาสปอร์ต" required>
+              </div>
+              <div class="mb-3">
+                <label for="regAddress" class="form-label fw-bold small text-secondary" data-text-key="labelAddress">ที่อยู่ปัจจุบัน *</label>
+                <textarea class="form-control modern-input" id="regAddress" name="regAddress" rows="2" placeholder="ที่อยู่ บ้านเลขที่ ซอย ถนน..." required></textarea>
+              </div>
+              <div class="row g-2">
+                <div class="col-12 col-md-6 mb-3">
+                  <label for="regPhone" class="form-label fw-bold small text-secondary" data-text-key="labelPhone">เบอร์โทรศัพท์มือถือ *</label>
+                  <input type="tel" class="form-control modern-input" id="regPhone" name="regPhone" pattern="^0[0-9]{9}$" placeholder="08XXXXXXXX" data-title-key="phonePatternTitle" title="ต้องเป็นตัวเลข 10 หลักและขึ้นต้นด้วย 0" required>
                 </div>
-                <div class="mb-3">
-                  <label for="regID" class="form-label fw-bold" data-text-key="labelID">หมายเลขบัตรประชาชน หรือ Passport ID *</label>
-                  <input type="text" class="form-control modern-input" id="regID" name="regID" required>
+                <div class="col-12 col-md-6 mb-3">
+                  <label for="regEmail" class="form-label fw-bold small text-secondary" data-text-key="labelEmail">อีเมล *</label>
+                  <input type="email" class="form-control modern-input" id="regEmail" name="regEmail" placeholder="name@example.com" required>
                 </div>
-                <div class="mb-3">
-                  <label for="regAddress" class="form-label fw-bold" data-text-key="labelAddress">ที่อยู่ปัจจุบัน *</label>
-                  <textarea class="form-control modern-input" id="regAddress" name="regAddress" rows="2" required></textarea>
-                </div>
-                <div class="mb-3">
-                  <label for="regPhone" class="form-label fw-bold" data-text-key="labelPhone">หมายเลขโทรศัพท์ (ตัวอย่าง: 08XXXXXXXX) *</label>
-                  <input type="tel" class="form-control modern-input" id="regPhone" name="regPhone" pattern="^0[0-9]{9}$" data-title-key="phonePatternTitle" title="ต้องเป็นตัวเลข 10 หลักและขึ้นต้นด้วย 0" required>
-                </div>
-                <div class="mb-3">
-                  <label for="regEmail" class="form-label fw-bold" data-text-key="labelEmail">อีเมล *</label>
-                  <input type="email" class="form-control modern-input" id="regEmail" name="regEmail" required>
+              </div>
+            </div>
+
+            <!-- 2. ข้อมูลสัตว์เลี้ยง -->
+            <div class="form-card" style="background: #fafdfb;">
+              <div class="form-card-title">
+                <i class="bi bi-heart-fill text-danger"></i>
+                <span data-text-key="petRegTitle">ข้อมูลสัตว์เลี้ยงแสนรัก</span>
+              </div>
+              
+              <!-- สถานที่ลงทะเบียน -->
+              <div class="mb-3">
+                <label for="location" class="form-label fw-bold small text-secondary" data-text-key="labelLocation">เลือกสวนที่ต้องการลงทะเบียน *</label>
+                <select class="form-select modern-input" id="location" name="location" onchange="toggleFormVisibility()" required>
+                  <option value="" data-text-key="selectLocationDefault">-- เลือกสถานที่ --</option>
+                  <option value="สวนวัชราภิรมย์" data-text-key="locWatcharapirom">สวนวัชราภิรมย์</option>
+                  <option value="สวนบางแคภิรมย์" data-text-key="locBangkaepirom">สวนบางแคภิรมย์</option>
+                  <option value="สวนเทียนทะเลพัฒนาพฤกษาภิรมย์" data-text-key="locThianThalay">สวนเทียนทะเลพัฒนาพฤกษาภิรมย์</option>
+                  <option value="สวนเบญจกิติ" data-text-key="locBenjakitti">สวนเบญจกิติ</option>
+                  <option value="สวนวชิรเบญจทัศ" data-text-key="locWachirabenchatat">สวนวชิรเบญจทัศ</option>
+                  <option value="สวนสาธารณะทางต่างระดับพรานนกฯ" data-text-key="locPhraennok">สวนสาธารณะทางต่างระดับพรานนกฯ</option>
+                  <option value="สวนลุมพินี" data-text-key="locLumpini">สวนลุมพินี</option>
+                </select>
+                <div id="locationAlert" class="alert alert-warning mt-3 small" style="display:none;" data-text-key="locationClosedAlert">
+                  🐾 หากไม่ได้รับอีเมลในการแจ้งรหัสสมาชิก สามารถนำเลขบัตรประชาชนหรือ Passport ID ระบุในช่องค้นหาเพื่อดูรหัสสมาชิกได้
                 </div>
               </div>
 
-              <div class="section-card pet-section-card mt-4">
-                <h4 class="mb-3" data-text-key="petRegTitle">ข้อมูลสัตว์เลี้ยง</h4>
+              <!-- ฟิลด์ย่อยของสัตว์เลี้ยง -->
+              <div id="pet-registration-fields" style="display:none;">
                 
+                <!-- ประเภทสัตว์เลี้ยง -->
                 <div class="mb-3">
-                  <label for="location" class="form-label fw-bold" data-text-key="labelLocation">สถานที่ลงทะเบียน *</label>
-                  <select class="form-select modern-input" id="location" name="location" onchange="toggleFormVisibility()" required>
-                    <option value="" data-text-key="selectLocationDefault">-- เลือกสถานที่ --</option>
-                    <option value="สวนวัชราภิรมย์" data-text-key="locWatcharapirom">สวนวัชราภิรมย์</option>
-                    <option value="สวนบางแคภิรมย์" data-text-key="locBangkaepirom">สวนบางแคภิรมย์</option>
-                    <option value="สวนเทียนทะเลพัฒนาพฤกษาภิรมย์" data-text-key="locThianThalay">สวนเทียนทะเลพัฒนาพฤกษาภิรมย์</option>
-                    <option value="สวนเบญจกิติ" data-text-key="locBenjakitti">สวนเบญจกิติ</option>
-                    <option value="สวนวชิรเบญจทัศ" data-text-key="locWachirabenchatat">สวนวชิรเบญจทัศ</option>
-                    <option value="สวนสาธารณะทางต่างระดับพรานนกฯ" data-text-key="locPhraennok">สวนสาธารณะทางต่างระดับพรานนกฯ</option>
-                    <option value="สวนลุมพินี" data-text-key="locLumpini">สวนลุมพินี</option>
-                  </select>
-                  <div id="locationAlert" class="alert alert-warning mt-3 fade-in" style="display:none;" data-text-key="locationClosedAlert">
-                      🐾 หากไม่ได้รับอีเมลในการแจ้งรหัสสมาชิก สามารถนำเลขบัตรประชาชนหรือ Passport ID ระบุในช่องค้นหาเพื่อดูรหัสสมาชิกได้
+                  <label class="form-label fw-bold small text-secondary d-block" data-text-key="labelPetType">ประเภทสัตว์เลี้ยง *</label>
+                  <div id="petTypeContainer" class="tile-grid"></div>
+                  <input type="text" class="form-control modern-input mt-2" id="petTypeOther" name="petTypeOther" data-placeholder-key="otherPetPlaceholder" placeholder="โปรดระบุประเภทสัตว์เลี้ยงอื่นๆ" style="display:none;">
+                </div>
+
+                <!-- ชื่อสัตว์เลี้ยง -->
+                <div class="mb-3">
+                  <label for="petName" class="form-label fw-bold small text-secondary" data-text-key="labelPetName">ชื่อสัตว์เลี้ยง *</label>
+                  <input type="text" class="form-control modern-input" id="petName" name="petName" placeholder="เช่น น้องมังคุด, ชิโร่" required>
+                </div>
+
+                <!-- เพศสัตว์เลี้ยง -->
+                <div class="mb-3">
+                  <label class="form-label fw-bold small text-secondary d-block" data-text-key="labelPetGender">เพศ *</label>
+                  <div class="tile-grid">
+                    <div>
+                      <input type="radio" class="btn-check" name="petGender" id="genderMale" value="เพศผู้" required>
+                      <label class="radio-tile-label" for="genderMale">
+                        <span class="tile-icon">♂️</span>
+                        <span class="tile-title" data-text-key="genderMale">เพศผู้</span>
+                      </label>
+                    </div>
+                    <div>
+                      <input type="radio" class="btn-check" name="petGender" id="genderFemale" value="เพศเมีย">
+                      <label class="radio-tile-label" for="genderFemale">
+                        <span class="tile-icon">♀️</span>
+                        <span class="tile-title" data-text-key="genderFemale">เพศเมีย</span>
+                      </label>
+                    </div>
+                    <div>
+                      <input type="radio" class="btn-check" name="petGender" id="genderNA" value="ไม่ระบุ">
+                      <label class="radio-tile-label" for="genderNA">
+                        <span class="tile-icon">🐾</span>
+                        <span class="tile-title" data-text-key="genderNA">ไม่ระบุ</span>
+                      </label>
+                    </div>
                   </div>
                 </div>
 
-                <div id="pet-registration-fields" class="fade-in" style="display:none;">
-                  
-                  <div class="mb-3 mt-4">
-                    <label class="form-label fw-bold d-block" data-text-key="labelPetType">ประเภทสัตว์เลี้ยง *</label>
-                    <div id="petTypeContainer" class="d-flex w-100 gap-2 modern-radio-group flex-wrap"></div>
-                    <input type="text" class="form-control modern-input mt-3 fade-in" id="petTypeOther" name="petTypeOther" data-placeholder-key="otherPetPlaceholder" placeholder="ระบุประเภทสัตว์เลี้ยงอื่นๆ" style="display:none;">
-                  </div>
+                <!-- สายพันธุ์ -->
+                <div class="mb-3">
+                  <label for="petBreed" class="form-label fw-bold small text-secondary" data-text-key="labelPetBreed">สายพันธุ์ *</label>
+                  <input type="text" class="form-control modern-input" id="petBreed" name="petBreed" list="breedSuggestions" data-placeholder-key="breedPlaceholder" placeholder="พิมพ์ค้นหา หรือเลือกจากรายการ" autocomplete="off" required>
+                  <datalist id="breedSuggestions"></datalist>
+                </div>
 
-                  <div class="mb-3 mt-4">
-                    <label for="petName" class="form-label fw-bold" data-text-key="labelPetName">ชื่อสัตว์เลี้ยง *</label>
-                    <input type="text" class="form-control modern-input" id="petName" name="petName" required>
-                  </div>
-
-                  <div class="mb-3 mt-4">
-                    <label class="form-label fw-bold d-block" data-text-key="labelPetGender">เพศ *</label>
-                    <div class="d-flex w-100 gap-2 modern-radio-group">
-                      <input type="radio" class="btn-check" name="petGender" id="genderMale" value="เพศผู้" required>
-                      <label class="btn modern-radio-btn flex-fill" for="genderMale" data-text-key="genderMale">เพศผู้</label>
-                      
-                      <input type="radio" class="btn-check" name="petGender" id="genderFemale" value="เพศเมีย">
-                      <label class="btn modern-radio-btn flex-fill" for="genderFemale" data-text-key="genderFemale">เพศเมีย</label>
-                      
-                      <input type="radio" class="btn-check" name="petGender" id="genderNA" value="ไม่ระบุ">
-                      <label class="btn modern-radio-btn flex-fill" for="genderNA" data-text-key="genderNA">ไม่ระบุ</label>
-                    </div>
-                  </div>
-
-                  <div class="mb-3 mt-4">
-                    <label for="petBreed" class="form-label fw-bold" data-text-key="labelPetBreed">สายพันธุ์ *</label>
-                    <input type="text" class="form-control modern-input" id="petBreed" name="petBreed" list="breedSuggestions" data-placeholder-key="breedPlaceholder" placeholder="เลือกหรือพิมพ์สายพันธุ์" autocomplete="off" required>
-                    <datalist id="breedSuggestions"></datalist>
-                  </div>
-
-                  <div class="mb-4 mt-4">
-                    <label class="form-label fw-bold d-block" data-text-key="labelPetSize">ขนาด *</label>
-                    <div class="d-flex w-100 gap-2 modern-radio-group">
+                <!-- ขนาด -->
+                <div class="mb-4">
+                  <label class="form-label fw-bold small text-secondary d-block" data-text-key="labelPetSize">ขนาดตัว *</label>
+                  <div class="tile-grid">
+                    <div>
                       <input type="radio" class="btn-check" name="petSize" id="sizeSmall" value="ขนาดเล็ก (ไม่เกิน 5 กก.)" required>
-                      <label class="btn modern-radio-btn flex-fill px-1" for="sizeSmall">
-                          <span class="d-block fw-bold" data-text-key="sizeSmallTitle">เล็ก</span>
-                          <span class="d-block small-desc" data-text-key="sizeSmallDesc">&lt; 5 กก.</span>
+                      <label class="radio-tile-label" for="sizeSmall">
+                        <span class="tile-title" data-text-key="sizeSmallTitle">เล็ก</span>
+                        <span class="tile-subtitle" data-text-key="sizeSmallDesc">&lt; 5 กก.</span>
                       </label>
-                      
+                    </div>
+                    <div>
                       <input type="radio" class="btn-check" name="petSize" id="sizeMedium" value="ขนาดกลาง (ระหว่าง 5 - 15 กก.)">
-                      <label class="btn modern-radio-btn flex-fill px-1" for="sizeMedium">
-                          <span class="d-block fw-bold" data-text-key="sizeMediumTitle">กลาง</span>
-                          <span class="d-block small-desc" data-text-key="sizeMediumDesc">5-15 กก.</span>
+                      <label class="radio-tile-label" for="sizeMedium">
+                        <span class="tile-title" data-text-key="sizeMediumTitle">กลาง</span>
+                        <span class="tile-subtitle" data-text-key="sizeMediumDesc">5-15 กก.</span>
                       </label>
-                      
+                    </div>
+                    <div>
                       <input type="radio" class="btn-check" name="petSize" id="sizeLarge" value="ขนาดใหญ่ (15 กก. ขึ้นไป)">
-                      <label class="btn modern-radio-btn flex-fill px-1" for="sizeLarge">
-                          <span class="d-block fw-bold" data-text-key="sizeLargeTitle">ใหญ่</span>
-                          <span class="d-block small-desc" data-text-key="sizeLargeDesc">&gt; 15 กก.</span>
+                      <label class="radio-tile-label" for="sizeLarge">
+                        <span class="tile-title" data-text-key="sizeLargeTitle">ใหญ่</span>
+                        <span class="tile-subtitle" data-text-key="sizeLargeDesc">&gt; 15 กก.</span>
                       </label>
                     </div>
                   </div>
+                </div>
+
+                <!-- หลักฐานวัคซีน -->
+                <div class="mb-4 p-3 bg-white border rounded">
+                  <label class="form-label fw-bold small text-secondary mb-1" data-text-key="labelVacCert">หลักฐานการฉีดวัคซีน *</label>
+                  <p class="text-muted small mb-2">สมุดวัคซีนหน้าที่มีข้อมูลวัคซีนพิษสุนัขบ้าและประวัติล่าสุด</p>
                   
-                  <!-- 1. หลักฐานการฉีดวัคซีน -->
-                  <div class="mb-4 mt-5">
-                    <label class="form-label fw-bold" data-text-key="labelVacCert">หลักฐานการฉีดวัคซีน *</label>
-                    
-                    <!-- Input Files -->
-                    <input type="file" accept="image/*" class="real-file-input" id="petVacCert_gallery" onchange="handleFileSelect('petVacCert', this)">
-                    <input type="file" accept="image/*" capture="environment" class="real-file-input" id="petVacCert_camera" onchange="handleFileSelect('petVacCert', this)">
-                    
-                    <div class="file-action-buttons">
-                      <button type="button" class="btn-file-choice" onclick="openFilePicker('petVacCert', true)">
-                        <span class="icon">📷</span> <span data-text-key="btnCamera">ถ่ายภาพ</span>
-                      </button>
-                      <button type="button" class="btn-file-choice" onclick="openFilePicker('petVacCert', false)">
-                        <span class="icon">📁</span> <span data-text-key="btnGallery">เลือกรูปภาพ</span>
-                      </button>
-                    </div>
-
-                    <div id="boxVacCert" class="file-chosen-box">
-                      <span id="filenameVacCert" class="text-muted small" data-text-key="fileNotChosen">ยังไม่ได้เลือกไฟล์</span>
-                      <button type="button" id="btnRemoveVac" class="btn-close btn-sm" style="display:none;" onclick="removeSelectedFile('petVacCert')"></button>
-                    </div>
-
-                    <!-- กล่อง Preview รูปภาพวัคซีน -->
-                    <div id="previewBoxVacCert" class="preview-container fade-in" style="display: none;">
-                      <img id="previewImgVacCert" class="preview-image" src="" alt="ตัวอย่างหลักฐานการฉีดวัคซีน">
-                    </div>
-
-                    <div id="currentVacLink" class="mt-2" style="display:none;">
-                      <span class="current-img-link">✅ <a href="#" target="_blank" id="linkVacHref" data-text-key="viewCurrentPic">ดูรูปปัจจุบัน</a> <span class="text-muted" data-text-key="uploadToChange">(อัปโหลดใหม่เพื่อเปลี่ยน)</span></span>
-                    </div>
+                  <input type="file" accept="image/*" class="real-file-input" id="petVacCert_gallery" onchange="handleFileSelect('petVacCert', this)">
+                  <input type="file" accept="image/*" capture="environment" class="real-file-input" id="petVacCert_camera" onchange="handleFileSelect('petVacCert', this)">
+                  
+                  <div class="file-input-actions">
+                    <button type="button" class="btn-file-touch" onclick="openFilePicker('petVacCert', true)">
+                      <i class="bi bi-camera-fill"></i> <span data-text-key="btnCamera">ถ่ายภาพ</span>
+                    </button>
+                    <button type="button" class="btn-file-touch" onclick="openFilePicker('petVacCert', false)">
+                      <i class="bi bi-image"></i> <span data-text-key="btnGallery">เลือกรูป</span>
+                    </button>
                   </div>
 
-                  <!-- 2. ภาพถ่ายสัตว์เลี้ยง -->
-                  <div class="mb-4">
-                    <label class="form-label fw-bold" data-text-key="labelPetPhoto">ภาพถ่ายสัตว์เลี้ยง *</label>
-                    
-                    <!-- Input Files -->
-                    <input type="file" accept="image/*" class="real-file-input" id="petPhoto_gallery" onchange="handleFileSelect('petPhoto', this)">
-                    <input type="file" accept="image/*" capture="environment" class="real-file-input" id="petPhoto_camera" onchange="handleFileSelect('petPhoto', this)">
-                    
-                    <div class="file-action-buttons">
-                      <button type="button" class="btn-file-choice" onclick="openFilePicker('petPhoto', true)">
-                        <span class="icon">📷</span> <span data-text-key="btnCamera">ถ่ายภาพ</span>
-                      </button>
-                      <button type="button" class="btn-file-choice" onclick="openFilePicker('petPhoto', false)">
-                        <span class="icon">📁</span> <span data-text-key="btnGallery">เลือกรูปภาพ</span>
-                      </button>
-                    </div>
-
-                    <div id="boxPetPhoto" class="file-chosen-box">
-                      <span id="filenamePetPhoto" class="text-muted small" data-text-key="fileNotChosen">ยังไม่ได้เลือกไฟล์</span>
-                      <button type="button" id="btnRemovePhoto" class="btn-close btn-sm" style="display:none;" onclick="removeSelectedFile('petPhoto')"></button>
-                    </div>
-
-                    <!-- กล่อง Preview รูปสัตว์เลี้ยง -->
-                    <div id="previewBoxPetPhoto" class="preview-container fade-in" style="display: none;">
-                      <img id="previewImgPetPhoto" class="preview-image" src="" alt="ตัวอย่างภาพสัตว์เลี้ยง">
-                    </div>
-
-                    <div id="currentPetLink" class="mt-2" style="display:none;">
-                      <span class="current-img-link">✅ <a href="#" target="_blank" id="linkPetHref" data-text-key="viewCurrentPic">ดูรูปปัจจุบัน</a> <span class="text-muted" data-text-key="uploadToChange">(อัปโหลดใหม่เพื่อเปลี่ยน)</span></span>
-                    </div>
+                  <div id="boxVacCert" class="file-chosen-status">
+                    <span id="filenameVacCert" class="text-muted" data-text-key="fileNotChosen">ยังไม่ได้เลือกไฟล์</span>
+                    <button type="button" id="btnRemoveVac" class="btn-close btn-sm" style="display:none;" onclick="removeSelectedFile('petVacCert')"></button>
                   </div>
 
-                  <div class="d-grid mt-5">
-                    <button type="submit" class="btn btn-primary btn-lg modern-submit-btn" id="submit-btn" disabled data-text-key="submitButton">บันทึกข้อมูลและลงทะเบียน</button>
+                  <div id="previewBoxVacCert" class="preview-box" style="display: none;">
+                    <img id="previewImgVacCert" class="preview-img-render" src="" alt="พรีวิวหลักฐานวัคซีน">
                   </div>
-                </div> 
-              </div>
-            </div> 
-          </form>
-        </section>
 
-        <footer class="powered-by">
-          &copy; 2026 ส่วนยุทธศาสตร์พื้นที่สีเขียว สำนักงานบริหารจัดการพื้นที่สีเขียว สำนักสิ่งแวดล้อม
-        </footer>
-    </div> 
+                  <div id="currentVacLink" class="mt-2" style="display:none;">
+                    <span class="badge bg-light text-dark border p-2"><i class="bi bi-check-circle-fill text-success"></i> <a href="#" target="_blank" id="linkVacHref" data-text-key="viewCurrentPic">ดูรูปปัจจุบัน</a> <span class="text-muted" data-text-key="uploadToChange">(อัปโหลดใหม่เพื่อเปลี่ยน)</span></span>
+                  </div>
+                </div>
+
+                <!-- ภาพถ่ายสัตว์เลี้ยง -->
+                <div class="mb-4 p-3 bg-white border rounded">
+                  <label class="form-label fw-bold small text-secondary mb-1" data-text-key="labelPetPhoto">ภาพถ่ายสัตว์เลี้ยง *</label>
+                  <p class="text-muted small mb-2">ภาพถ่ายหน้าตรงเห็นใบหน้าชัดเจน เพื่อใช้ยืนยันตัวตน</p>
+                  
+                  <input type="file" accept="image/*" class="real-file-input" id="petPhoto_gallery" onchange="handleFileSelect('petPhoto', this)">
+                  <input type="file" accept="image/*" capture="environment" class="real-file-input" id="petPhoto_camera" onchange="handleFileSelect('petPhoto', this)">
+                  
+                  <div class="file-input-actions">
+                    <button type="button" class="btn-file-touch" onclick="openFilePicker('petPhoto', true)">
+                      <i class="bi bi-camera-fill"></i> <span data-text-key="btnCamera">ถ่ายภาพ</span>
+                    </button>
+                    <button type="button" class="btn-file-touch" onclick="openFilePicker('petPhoto', false)">
+                      <i class="bi bi-image"></i> <span data-text-key="btnGallery">เลือกรูป</span>
+                    </button>
+                  </div>
+
+                  <div id="boxPetPhoto" class="file-chosen-status">
+                    <span id="filenamePetPhoto" class="text-muted" data-text-key="fileNotChosen">ยังไม่ได้เลือกไฟล์</span>
+                    <button type="button" id="btnRemovePhoto" class="btn-close btn-sm" style="display:none;" onclick="removeSelectedFile('petPhoto')"></button>
+                  </div>
+
+                  <div id="previewBoxPetPhoto" class="preview-box" style="display: none;">
+                    <img id="previewImgPetPhoto" class="preview-img-render" src="" alt="พรีวิวรูปสัตว์เลี้ยง">
+                  </div>
+
+                  <div id="currentPetLink" class="mt-2" style="display:none;">
+                    <span class="badge bg-light text-dark border p-2"><i class="bi bi-check-circle-fill text-success"></i> <a href="#" target="_blank" id="linkPetHref" data-text-key="viewCurrentPic">ดูรูปปัจจุบัน</a> <span class="text-muted" data-text-key="uploadToChange">(อัปโหลดใหม่เพื่อเปลี่ยน)</span></span>
+                  </div>
+                </div>
+
+                <div class="d-grid mt-4">
+                  <button type="submit" class="btn btn-submit-action" id="submit-btn" disabled data-text-key="submitButton">
+                    บันทึกข้อมูลและลงทะเบียน 🐾
+                  </button>
+                </div>
+              </div> 
+            </div>
+          </div> 
+        </form>
+      </section>
+
+    </div>
+
+    <!-- ส่วนท้าย Footer -->
+    <footer class="app-footer">
+      <div>&copy; 2026 ส่วนยุทธศาสตร์พื้นที่สีเขียว สำนักงานบริหารจัดการพื้นที่สีเขียว สำนักสิ่งแวดล้อม</div>
+    </footer>
   </div> 
 
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.all.min.js"></script>
   
@@ -523,15 +742,17 @@
 
     const MESSAGES = {
         th: {
-            pageTitle: 'แบบฟอร์มลงทะเบียนสมัครสมาชิกเข้าใช้บริการสวนสำหรับสัตว์เลี้ยง',
+            pageTitle: 'แบบฟอร์มลงทะเบียนสมาชิกสวนสำหรับสัตว์เลี้ยง',
             announcementBadge: '📢 ประกาศ',
             announcementText: 'หากไม่ได้รับอีเมลในการแจ้งรหัสสมาชิก สามารถนำเลขบัตรประชาชนหรือ Passport ID ระบุในช่องค้นหาเพื่อดูรหัสสมาชิกได้ ขออภัยในความไม่สะดวก 🐾',
-            mainTitle: 'แบบฟอร์มลงทะเบียนสมัครสมาชิก<span class="mobile-no-break"><br></span>เข้าใช้บริการสวนสำหรับสัตว์เลี้ยง 🐾',
-            searchHeader: '🔍 ค้นหาข้อมูลสมาชิกเดิม',
+            mainTitle: 'แบบฟอร์มลงทะเบียนสมาชิก<br>สวนสำหรับสัตว์เลี้ยง 🐾',
+            step1HeaderShort: 'ยอมรับเงื่อนไข',
+            step2HeaderShort: 'ข้อมูลลงทะเบียน',
+            searchHeader: 'ค้นหาข้อมูลสมาชิกเดิม',
             searchPlaceholder: 'หมายเลขบัตรประชาชน หรือ Passport ID',
             searchButton: 'ค้นหา',
-            step1Header: 'ขั้นตอนที่ 1: การยอมรับเงื่อนไข',
-            step1Sub: '*(ต้องเลื่อนอ่านจนสุดเพื่อยอมรับ)*',
+            step1Header: 'เงื่อนไขการเข้าใช้บริการสวนสัตว์เลี้ยง',
+            step1Sub: '*(กรุณาเลื่อนอ่านกฎระเบียบจนสุดเพื่อเปิดใช้งานปุ่มยินยอม)*',
             term1: '1. สัตว์เลี้ยงต้องได้รับการฉีดวัคซีนครบถ้วนตามกำหนด และต้องมีหลักฐานแสดง',
             term2: '2. ผู้ลงทะเบียนจะต้องรับผิดชอบต่อสัตว์เลี้ยงของตนเองตลอดเวลาที่อยู่ในพื้นที่สวน',
             term3: '3. ผู้ลงทะเบียนต้องรับผิดชอบต่อสัตว์เลี้ยงของตนเองและต้องมีสายจูง/ตะกร้อครอบปากในพื้นที่ที่กำหนด',
@@ -541,15 +762,15 @@
             acceptButtonDisabled: 'ยอมรับและดำเนินการต่อ',
             acceptButtonEnabled: 'ยอมรับเงื่อนไขแล้ว, ดำเนินการต่อ',
             step2Header: 'ขั้นตอนที่ 2: กรอกข้อมูลการลงทะเบียน',
-            regInfoTitle: 'ข้อมูลผู้ลงทะเบียน',
+            regInfoTitle: 'ข้อมูลผู้ลงทะเบียน (เจ้าของ)',
             labelName: 'ชื่อ-นามสกุล ผู้ลงทะเบียน *',
             labelID: 'หมายเลขบัตรประชาชน หรือ Passport ID *',
             labelAddress: 'ที่อยู่ปัจจุบัน *',
-            labelPhone: 'หมายเลขโทรศัพท์ (ตัวอย่าง: 08XXXXXXXX) *',
+            labelPhone: 'เบอร์โทรศัพท์มือถือ *',
             phonePatternTitle: 'ต้องเป็นตัวเลข 10 หลักและขึ้นต้นด้วย 0',
             labelEmail: 'อีเมล *',
-            petRegTitle: 'ข้อมูลสัตว์เลี้ยง',
-            labelLocation: 'สถานที่ลงทะเบียน *',
+            petRegTitle: 'ข้อมูลสัตว์เลี้ยงแสนรัก',
+            labelLocation: 'เลือกสวนที่ต้องการลงทะเบียน *',
             selectLocationDefault: '-- เลือกสถานที่ --',
             locWatcharapirom: 'สวนวัชราภิรมย์',
             locBangkaepirom: 'สวนบางแคภิรมย์',
@@ -561,7 +782,7 @@
             locationClosedAlert: '🐾 สวนลุมพินี เปิดให้ลงทะเบียนสมัครสมาชิกวันที่ 4 กุมภาพันธ์ 2569 เป็นต้นไป',
             labelPetType: 'ประเภทสัตว์เลี้ยง *',
             selectPetTypeDefault: '-- กรุณาเลือกสถานที่ก่อน --',
-            otherPetPlaceholder: 'ระบุประเภทสัตว์เลี้ยงอื่นๆ',
+            otherPetPlaceholder: 'โปรดระบุประเภทสัตว์เลี้ยงอื่นๆ',
             labelPetName: 'ชื่อสัตว์เลี้ยง *',
             labelPetGender: 'เพศ *',
             genderMale: 'เพศผู้',
@@ -569,7 +790,7 @@
             genderNA: 'ไม่ระบุ',
             labelPetBreed: 'สายพันธุ์ *',
             breedPlaceholder: 'พิมพ์ค้นหา หรือระบุสายพันธุ์เอง',
-            labelPetSize: 'ขนาด *',
+            labelPetSize: 'ขนาดตัว *',
             sizeSmallTitle: 'เล็ก',
             sizeSmallDesc: '< 5 กก.',
             sizeMediumTitle: 'กลาง',
@@ -579,17 +800,17 @@
             labelVacCert: 'หลักฐานการฉีดวัคซีน *',
             labelPetPhoto: 'ภาพถ่ายสัตว์เลี้ยง *',
             btnCamera: 'ถ่ายภาพ',
-            btnGallery: 'เลือกรูปภาพ',
+            btnGallery: 'เลือกรูป',
             fileNotChosen: 'ยังไม่ได้เลือกไฟล์',
             fileChosenPrefix: 'ไฟล์: ',
             viewCurrentPic: 'ดูรูปปัจจุบัน',
             uploadToChange: '(อัปโหลดใหม่เพื่อเปลี่ยน)',
-            submitButton: 'บันทึกข้อมูลและลงทะเบียน',
+            submitButton: 'บันทึกข้อมูลและลงทะเบียน 🐾',
             
             swalLoadingTitle: 'กำลังเตรียมข้อมูล...',
             swalLoadingText: 'กรุณารอสักครู่',
-            swalResizingText: 'กำลังปรับลดขนาดรูปภาพ...',
-            swalUploadingText: 'กำลังส่งข้อมูลไปยังระบบ...',
+            swalResizingText: 'กำลังปรับขนาดภาพ...',
+            swalUploadingText: 'กำลังส่งข้อมูล...',
             swalSuccessTitle: 'ลงทะเบียนสำเร็จ!',
             swalSuccessMemberIDPrefix: 'รหัสสมาชิกของท่านคือ: ',
             swalSuccessPinPrefix: 'รหัส PIN 4 หลักสำหรับแก้ไขข้อมูล: ', 
@@ -626,12 +847,14 @@
             pageTitle: 'Pet Park Access Registration Form',
             announcementBadge: '📢 Notice',
             announcementText: 'If you did not receive an email with your ID, please use your National ID or Passport to search for it below. 🐾',
-            mainTitle: 'Pet Park Access<span class="mobile-no-break"><br></span>Registration Form 🐾',
-            searchHeader: '🔍 Search Existing Registration',
+            mainTitle: 'Pet Park Access<br>Registration Form 🐾',
+            step1HeaderShort: 'Terms & Conditions',
+            step2HeaderShort: 'Registration Form',
+            searchHeader: 'Search Existing Registration',
             searchPlaceholder: 'National ID or Passport ID',
             searchButton: 'Search',
-            step1Header: 'Step 1: Terms and Conditions',
-            step1Sub: '*(Please scroll to the bottom to accept)*',
+            step1Header: 'Pet Park Regulations & Terms',
+            step1Sub: '*(Please scroll to the bottom to enable acceptance)*',
             term1: '1. Pets must be fully vaccinated and proof of vaccination must be provided.',
             term2: '2. Registrants are responsible for their pets at all times while in the park.',
             term3: '3. Pets must be on a leash or muzzled in designated areas.',
@@ -641,15 +864,15 @@
             acceptButtonDisabled: 'Accept & Continue',
             acceptButtonEnabled: 'Terms Accepted, Continue',
             step2Header: 'Step 2: Registration Details',
-            regInfoTitle: 'Registrant Information',
+            regInfoTitle: 'Registrant Information (Owner)',
             labelName: 'Full Name *',
             labelID: 'National ID or Passport ID *',
             labelAddress: 'Current Address *',
-            labelPhone: 'Phone Number (e.g., 08XXXXXXXX) *',
+            labelPhone: 'Mobile Phone Number *',
             phonePatternTitle: 'Must be 10 digits starting with 0',
             labelEmail: 'Email Address *',
             petRegTitle: 'Pet Information',
-            labelLocation: 'Select Park *',
+            labelLocation: 'Select Park Location *',
             selectLocationDefault: '-- Select Park Location --',
             locWatcharapirom: 'Watcharapirom Park',
             locBangkaepirom: 'Bangkaepirom Park',
@@ -679,16 +902,16 @@
             labelVacCert: 'Vaccination Certificate *',
             labelPetPhoto: 'Pet Photo *',
             btnCamera: 'Take Photo',
-            btnGallery: 'Choose File',
+            btnGallery: 'Choose Photo',
             fileNotChosen: 'No file chosen',
             fileChosenPrefix: 'File: ',
             viewCurrentPic: 'View current photo',
             uploadToChange: '(Upload new to change)',
-            submitButton: 'Submit Registration',
+            submitButton: 'Submit Registration 🐾',
             
             swalLoadingTitle: 'Preparing data...',
             swalLoadingText: 'Please wait a moment',
-            swalResizingText: 'Compressing images...',
+            swalResizingText: 'Compressing image...',
             swalUploadingText: 'Sending to server...',
             swalSuccessTitle: 'Registration Successful!',
             swalSuccessMemberIDPrefix: 'Your Member ID is: ',
@@ -729,6 +952,12 @@
         en: { "สุนัข": "Dog", "แมว": "Cat", "อื่นๆ": "Other" }
     };
 
+    const PET_TYPE_ICONS = {
+        "สุนัข": "🐶",
+        "แมว": "🐱",
+        "อื่นๆ": "🐾"
+    };
+
     const PET_TYPE_RESTRICTIONS = {
         "สวนลุมพินี": ["สุนัข"],
         "สวนวัชราภิรมย์": ["สุนัข"],
@@ -757,24 +986,17 @@
         ]
     };
 
-    const selectedFiles = {
-      petVacCert: null,
-      petPhoto: null
-    };
+    const selectedFiles = { petVacCert: null, petPhoto: null };
 
-    // ฟังก์ชันเปิดตัวเลือกไฟล์ที่เข้ากันได้กับทุกอุปกรณ์
     function openFilePicker(fieldId, isCamera) {
       const isMobile = /Android|iPhone|iPad|iPod|webOS/i.test(navigator.userAgent);
       let targetInputId = `${fieldId}_gallery`;
-      
-      // บนมือถือ ถ้ากดถ่ายภาพให้ใช้ input camera ถ้าบน PC ให้เปิด file picker ปกติ
       if (isCamera && isMobile) {
         targetInputId = `${fieldId}_camera`;
       }
-      
       const input = document.getElementById(targetInputId);
       if (input) {
-        input.value = ''; // เคลียร์ค่าเดิมเพื่อให้เลือกไฟล์เดิมซ้ำได้
+        input.value = '';
         input.click();
       }
     }
@@ -782,13 +1004,12 @@
     function switchLanguage() {
         currentLang = currentLang === 'th' ? 'en' : 'th';
         const switcher = document.getElementById('language-switcher');
-        switcher.textContent = currentLang === 'th' ? 'English' : 'ภาษาไทย';
+        switcher.innerHTML = `<i class="bi bi-translate me-1"></i> ${currentLang === 'th' ? 'English' : 'ภาษาไทย'}`;
         updateTexts();
     }
 
     function updateTexts() {
         const langMessages = MESSAGES[currentLang];
-        
         document.querySelectorAll('[data-text-key]').forEach(element => {
             const key = element.getAttribute('data-text-key');
             if (langMessages[key]) {
@@ -859,9 +1080,7 @@
         updatePetTypeOptions(selectedLocation);
         
         const petFields = document.querySelectorAll('#pet-registration-fields [data-original-required="true"]');
-        petFields.forEach(field => {
-            field.required = shouldShowPetFields;
-        });
+        petFields.forEach(field => { field.required = shouldShowPetFields; });
 
         const petGenderRadios = document.querySelectorAll('input[name="petGender"]');
         const petSizeRadios = document.querySelectorAll('input[name="petSize"]'); 
@@ -890,19 +1109,17 @@
         petTypeOtherInput.required = false;
         
         if (!selectedLocation || availablePetTypes.length === 0) {
-            container.innerHTML = `<span class="text-muted small">${langMessages.selectPetTypeDefault}</span>`;
+            container.innerHTML = `<div class="p-3 text-muted text-center w-100 bg-light rounded">${langMessages.selectPetTypeDefault}</div>`;
             updateBreedList('');
             return;
         }
 
-        const isSingleOption = availablePetTypes.length === 1;
-
         availablePetTypes.forEach((type, index) => {
             const displayText = PET_TYPE_TRANS[currentLang][type] || type;
+            const icon = PET_TYPE_ICONS[type] || '🐾';
             const id = `petType_${index}`;
             
             const wrapper = document.createElement('div');
-            wrapper.className = isSingleOption ? 'w-100' : 'flex-fill';
             
             const input = document.createElement('input');
             input.type = 'radio';
@@ -912,7 +1129,7 @@
             input.value = type;
             input.required = true;
             
-            if (isSingleOption || type === oldValue) {
+            if (availablePetTypes.length === 1 || type === oldValue) {
                 input.checked = true;
             }
             
@@ -930,9 +1147,12 @@
             });
 
             const label = document.createElement('label');
-            label.className = `btn modern-radio-btn w-100 ${isSingleOption ? 'px-4' : ''}`;
+            label.className = 'radio-tile-label';
             label.setAttribute('for', id);
-            label.innerHTML = `<span class="fw-bold fs-6">${displayText}</span>`;
+            label.innerHTML = `
+              <span class="tile-icon">${icon}</span>
+              <span class="tile-title">${displayText}</span>
+            `;
 
             wrapper.appendChild(input);
             wrapper.appendChild(label);
@@ -956,7 +1176,7 @@
         const acceptBtn = document.getElementById('accept-btn');
         const langMessages = MESSAGES[currentLang];
         
-        if (termsDiv.scrollHeight - termsDiv.scrollTop <= termsDiv.clientHeight + 2) {
+        if (termsDiv.scrollHeight - termsDiv.scrollTop <= termsDiv.clientHeight + 4) {
             acceptBtn.disabled = false;
             acceptBtn.textContent = langMessages.acceptButtonEnabled;
         } else {
@@ -966,20 +1186,24 @@
     }
 
     function nextStep(step) {
-        document.querySelectorAll('.step-section').forEach(section => {
-            section.style.display = 'none';
-        });
-        const target = document.getElementById(`step-${step}`);
-        target.style.display = 'block';
-        window.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+        document.getElementById('step-1').style.display = (step === 1 ? 'block' : 'none');
+        document.getElementById('step-2').style.display = (step === 2 ? 'block' : 'none');
+        
+        if (step === 2) {
+          document.getElementById('badge-step-2').classList.add('active');
+          document.getElementById('search-section').style.display = 'none';
+        } else {
+          document.getElementById('badge-step-2').classList.remove('active');
+          document.getElementById('search-section').style.display = 'block';
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function rejectTerms() {
         const langMessages = MESSAGES[currentLang];
-        Swal.fire({ icon: 'info', title: langMessages.swalRejectTitle, text: langMessages.swalRejectText, confirmButtonColor: '#1e8449' });
+        Swal.fire({ icon: 'info', title: langMessages.swalRejectTitle, text: langMessages.swalRejectText, confirmButtonColor: '#10b981' });
     }
 
-    // จัดการเลือกไฟล์ และแสดง Preview
     function handleFileSelect(fieldId, inputElement) {
         const langMessages = MESSAGES[currentLang];
         const filenameSpan = document.getElementById(fieldId === 'petVacCert' ? 'filenameVacCert' : 'filenamePetPhoto');
@@ -992,14 +1216,11 @@
             selectedFiles[fieldId] = file;
 
             const fileName = file.name;
-            const truncatedName = fileName.length > 25 ? fileName.substring(0, 22) + '...' : fileName;
+            const truncatedName = fileName.length > 22 ? fileName.substring(0, 19) + '...' : fileName;
             
-            filenameSpan.innerHTML = `<strong>${langMessages.fileChosenPrefix || 'ไฟล์: '}</strong> ${truncatedName}`;
-            filenameSpan.classList.remove('text-muted');
-            filenameSpan.classList.add('text-success');
+            filenameSpan.innerHTML = `<strong class="text-success">${langMessages.fileChosenPrefix || 'ไฟล์: '}</strong> ${truncatedName}`;
             removeBtn.style.display = 'inline-block';
 
-            // แสดง Preview ภาพ
             const reader = new FileReader();
             reader.onload = function(e) {
                 previewImg.src = e.target.result;
@@ -1009,7 +1230,6 @@
         }
     }
 
-    // ลบไฟล์ที่เลือกและล้าง Preview
     function removeSelectedFile(fieldId) {
         const langMessages = MESSAGES[currentLang];
         selectedFiles[fieldId] = null;
@@ -1025,8 +1245,6 @@
         const previewImg = document.getElementById(fieldId === 'petVacCert' ? 'previewImgVacCert' : 'previewImgPetPhoto');
 
         filenameSpan.textContent = langMessages.fileNotChosen;
-        filenameSpan.classList.add('text-muted');
-        filenameSpan.classList.remove('text-success');
         removeBtn.style.display = 'none';
 
         if (previewImg) previewImg.src = '';
@@ -1039,19 +1257,16 @@
                 reject(new Error("ไฟล์ที่อัปโหลดไม่ใช่รูปภาพ"));
                 return;
             }
-
             const reader = new FileReader();
             reader.onload = function (readerEvent) {
                 const image = new Image();
                 image.onload = function () {
                     let width = image.width;
                     let height = image.height;
-
                     if (width > maxWidth) {
                         height = Math.round((height * maxWidth) / width);
                         width = maxWidth;
                     }
-
                     const canvas = document.createElement('canvas');
                     canvas.width = width;
                     canvas.height = height;
@@ -1130,7 +1345,7 @@
       const isEditMode = document.getElementById('isEditMode').value === 'true';
 
       if (document.getElementById('location').value === '') { 
-          Swal.fire({ icon: 'error', title: langMessages.swalErrorTitle, text: langMessages.locationClosedAlert.replace('🐾 ', ''), confirmButtonColor: '#d33' });
+          Swal.fire({ icon: 'error', title: langMessages.swalErrorTitle, text: langMessages.locationClosedAlert.replace('🐾 ', ''), confirmButtonColor: '#ef4444' });
           return;
       }
 
@@ -1176,18 +1391,16 @@
       document.getElementById('submit-btn').disabled = false;
       const langMessages = MESSAGES[currentLang];
       
-      if (!result.success) {
-        return onError(result.message);
-      }
+      if (!result.success) return onError(result.message);
 
-      let alertMessage = langMessages.swalSuccessMemberIDPrefix + `<br><strong style="color: var(--primary-green); font-size: 1.5rem;">${result.memberID}</strong><br><br>`;
+      let alertMessage = langMessages.swalSuccessMemberIDPrefix + `<br><strong style="color: var(--primary); font-size: 1.6rem;">${result.memberID}</strong><br><br>`;
       if(result.pin) {
-          alertMessage += langMessages.swalSuccessPinPrefix + `<br><strong style="color: #e74c3c; font-size: 1.8rem; letter-spacing: 2px;">${result.pin}</strong><br>`;
-          alertMessage += `<span style="font-size: 0.85rem; color: #6c757d;">${langMessages.swalSuccessPinNote}</span>`;
+          alertMessage += langMessages.swalSuccessPinPrefix + `<br><strong style="color: #ef4444; font-size: 1.8rem; letter-spacing: 3px;">${result.pin}</strong><br>`;
+          alertMessage += `<span style="font-size: 0.85rem; color: #64748b;">${langMessages.swalSuccessPinNote}</span>`;
       }
       if (result.warning) alertMessage += `<br><br><span style="color: orange; font-weight: bold;">${langMessages.swalWarning}</span>`;
       
-      Swal.fire({ icon: 'success', title: langMessages.swalSuccessTitle, html: alertMessage, confirmButtonText: langMessages.swalConfirm, confirmButtonColor: '#1e8449' }).then(() => {
+      Swal.fire({ icon: 'success', title: langMessages.swalSuccessTitle, html: alertMessage, confirmButtonText: langMessages.swalConfirm, confirmButtonColor: '#10b981' }).then(() => {
           resetToInitialState(); window.scrollTo(0, 0);
       });
     }
@@ -1196,7 +1409,7 @@
         document.getElementById('submit-btn').disabled = false;
         const langMessages = MESSAGES[currentLang];
         if (result.success) {
-            Swal.fire({ icon: 'success', title: langMessages.swalUpdateSuccessTitle, text: result.message, confirmButtonColor: '#1e8449' }).then(() => resetToInitialState());
+            Swal.fire({ icon: 'success', title: langMessages.swalUpdateSuccessTitle, text: result.message, confirmButtonColor: '#10b981' }).then(() => resetToInitialState());
         } else onError(result.message);
     }
 
@@ -1216,10 +1429,12 @@
         document.getElementById('step-2').style.display = 'none'; 
         document.getElementById('step-1').style.display = 'block'; 
         document.getElementById('search-section').style.display = 'block'; 
+        document.getElementById('badge-step-2').classList.remove('active');
 
         document.getElementById('submit-btn').textContent = MESSAGES[currentLang].submitButton;
         document.getElementById('location').value = "";
-        toggleFormVisibility(); document.getElementById('search-id').value = '';
+        toggleFormVisibility(); 
+        document.getElementById('search-id').value = '';
         
         const termsDiv = document.getElementById('terms-content');
         termsDiv.scrollTop = 0; checkScroll(); 
@@ -1227,13 +1442,13 @@
 
     function onError(error) {
       document.getElementById('submit-btn').disabled = false;
-      Swal.fire({ icon: 'error', title: MESSAGES[currentLang].swalErrorTitle, text: MESSAGES[currentLang].swalErrorText + (typeof error === 'string' ? error : error.message), confirmButtonColor: '#d33' });
+      Swal.fire({ icon: 'error', title: MESSAGES[currentLang].swalErrorTitle, text: MESSAGES[currentLang].swalErrorText + (typeof error === 'string' ? error : error.message), confirmButtonColor: '#ef4444' });
     }
 
     async function handleSearch() {
         const searchId = document.getElementById('search-id').value.trim();
         const langMessages = MESSAGES[currentLang];
-        if (!searchId) return Swal.fire({ icon: 'warning', title: langMessages.swalSearchWarning, text: langMessages.swalSearchWarningText, confirmButtonColor: '#1e8449' });
+        if (!searchId) return Swal.fire({ icon: 'warning', title: langMessages.swalSearchWarning, text: langMessages.swalSearchWarningText, confirmButtonColor: '#10b981' });
 
         Swal.fire({ 
           title: langMessages.swalSearchLoading, 
@@ -1255,25 +1470,25 @@
     function showSearchResults(result) {
         const langMessages = MESSAGES[currentLang];
         if (result.success) {
-            let htmlContent = `<div class="table-responsive"><table class="table table-hover text-start"><thead><tr>
+            let htmlContent = `<div class="table-responsive"><table class="table align-middle text-start"><thead><tr class="table-light">
                 <th>${langMessages.tableHeaderMemberID}</th><th>${langMessages.tableHeaderLocation}</th>
                 <th>${langMessages.tableHeaderRegName}</th><th>${langMessages.tableHeaderPetName}</th>
                 <th>${langMessages.tableHeaderAction}</th></tr></thead><tbody>`;
             result.data.forEach(item => {
                 htmlContent += `<tr>
-                    <td class="align-middle">${item['รหัสสมาชิก']}</td>
-                    <td class="align-middle">${item['สถานที่']}</td>
-                    <td class="align-middle">${item['ชื่อผู้ลงทะเบียน']}</td>
-                    <td class="align-middle">${item['ชื่อสัตว์เลี้ยง']}</td>
-                    <td class="align-middle">
-                        <div class="d-flex flex-column gap-2" style="max-width: 100px;">
-                            <button class="btn btn-warning btn-sm btn-fixed-width" onclick="prepareEdit('${item['รหัสสมาชิก']}', '${item['สถานที่']}')">${langMessages.btnEdit}</button>
-                            <button class="btn btn-info btn-sm text-white btn-fixed-width" onclick="requestPin('${item['รหัสสมาชิก']}', '${item['สถานที่']}')">${langMessages.btnResendPin}</button>
+                    <td class="fw-bold text-success">${item['รหัสสมาชิก']}</td>
+                    <td>${item['สถานที่']}</td>
+                    <td>${item['ชื่อผู้ลงทะเบียน']}</td>
+                    <td>🐾 ${item['ชื่อสัตว์เลี้ยง']}</td>
+                    <td>
+                        <div class="d-flex flex-column gap-1">
+                            <button class="btn btn-warning btn-sm" onclick="prepareEdit('${item['รหัสสมาชิก']}', '${item['สถานที่']}')">${langMessages.btnEdit}</button>
+                            <button class="btn btn-outline-info btn-sm" onclick="requestPin('${item['รหัสสมาชิก']}', '${item['สถานที่']}')">${langMessages.btnResendPin}</button>
                         </div>
                     </td></tr>`;
             });
             htmlContent += '</tbody></table></div>';
-            Swal.fire({ icon: 'success', title: langMessages.swalSearchSuccessTitle, html: htmlContent, width: 800, confirmButtonColor: '#1e8449' });
+            Swal.fire({ icon: 'success', title: langMessages.swalSearchSuccessTitle, html: htmlContent, width: 800, confirmButtonColor: '#10b981' });
         } else showSearchError(result.message);
     }
 
@@ -1281,7 +1496,7 @@
         const langMessages = MESSAGES[currentLang];
         let errorText = typeof error === 'string' ? error : error.message;
         let isNotFound = errorText.includes('ไม่พบข้อมูลการลงทะเบียน');
-        Swal.fire({ icon: isNotFound ? 'info' : 'error', title: isNotFound ? langMessages.swalSearchNotFoundError : langMessages.swalErrorTitle, text: isNotFound ? langMessages.swalSearchNotFoundText : errorText, confirmButtonColor: '#1e8449' });
+        Swal.fire({ icon: isNotFound ? 'info' : 'error', title: isNotFound ? langMessages.swalSearchNotFoundError : langMessages.swalErrorTitle, text: isNotFound ? langMessages.swalSearchNotFoundText : errorText, confirmButtonColor: '#10b981' });
     }
 
     function requestPin(memberID, location) {
@@ -1291,8 +1506,8 @@
             text: langMessages.swalResendConfirmText,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#17a2b8',
-            cancelButtonColor: '#6c757d',
+            confirmButtonColor: '#10b981',
+            cancelButtonColor: '#94a3b8',
             confirmButtonText: langMessages.btnConfirmResend,
             cancelButtonText: currentLang === 'th' ? 'ยกเลิก' : 'Cancel'
         }).then(async (result) => {
@@ -1307,9 +1522,9 @@
                 try {
                   const res = await callGasApi('resendPin', { memberID, location });
                   if(res.success) {
-                      Swal.fire({ icon: 'success', title: langMessages.swalResendSuccess, text: res.message, confirmButtonColor: '#1e8449' });
+                      Swal.fire({ icon: 'success', title: langMessages.swalResendSuccess, text: res.message, confirmButtonColor: '#10b981' });
                   } else {
-                      Swal.fire({ icon: 'error', title: langMessages.swalErrorTitle, text: res.message, confirmButtonColor: '#d33' });
+                      Swal.fire({ icon: 'error', title: langMessages.swalErrorTitle, text: res.message, confirmButtonColor: '#ef4444' });
                   }
                 } catch(err) {
                   onError(err);
@@ -1320,22 +1535,21 @@
 
     function prepareEdit(memberID, location) {
         Swal.fire({
-            title: currentLang === 'th' ? 'ยืนยันความปลอดภัย' : 'Security Verification',
-            text: currentLang === 'th' ? 'กรุณากรอกรหัส PIN 4 หลัก ที่ท่านได้รับทางอีเมล หรือแคปหน้าจอไว้' : 'Please enter the 4-digit PIN you received via email.',
+            title: currentLang === 'th' ? 'ยืนยันรหัสความปลอดภัย' : 'Security PIN',
+            text: currentLang === 'th' ? 'กรุณากรอกรหัส PIN 4 หลัก' : 'Please enter your 4-digit PIN',
             input: 'password',
             inputAttributes: { 
                 maxlength: 4, 
                 autocapitalize: 'off', 
-                autocorrect: 'off', 
                 inputmode: 'numeric',
                 pattern: '[0-9]*',
-                style: 'text-align: center; font-size: 24px; letter-spacing: 12px; width: 60%; margin: 15px auto;'
+                style: 'text-align: center; font-size: 26px; letter-spacing: 12px; width: 60%; margin: 15px auto; border-radius: 12px; border: 2px solid #10b981;'
             },
             showCancelButton: true,
-            confirmButtonText: currentLang === 'th' ? 'ยืนยันข้อมูล' : 'Verify',
+            confirmButtonText: currentLang === 'th' ? 'ยืนยัน' : 'Verify',
             cancelButtonText: currentLang === 'th' ? 'ยกเลิก' : 'Cancel',
-            confirmButtonColor: '#1e8449',
-            cancelButtonColor: '#6c757d',
+            confirmButtonColor: '#10b981',
+            cancelButtonColor: '#94a3b8',
             showLoaderOnConfirm: true,
             preConfirm: async (pin) => {
                 if (!pin || !/^\d{4}$/.test(pin)) {
@@ -1363,9 +1577,7 @@
         document.getElementById('originalMemberID').value = memberID;
         document.getElementById('editPin').value = pinStr;
         
-        document.querySelectorAll('.step-section').forEach(s => s.style.display = 'none');
-        document.getElementById('step-2').style.display = 'block';
-        document.getElementById('search-section').style.display = 'none'; 
+        nextStep(2);
         
         document.getElementById('submit-btn').textContent = MESSAGES[currentLang].submitButtonEdit;
         ['regName', 'regID', 'regAddress', 'regPhone', 'regEmail'].forEach(id => document.getElementById(id).value = data[id]);
@@ -1412,7 +1624,7 @@
         if (data.existingVacUrl) { document.getElementById('currentVacLink').style.display = 'block'; document.getElementById('linkVacHref').href = data.existingVacUrl; }
         if (data.existingPetUrl) { document.getElementById('currentPetLink').style.display = 'block'; document.getElementById('linkPetHref').href = data.existingPetUrl; }
         
-        updateTexts(); window.scrollTo(0, 0);
+        updateTexts();
     }
 
     document.addEventListener('DOMContentLoaded', () => {
